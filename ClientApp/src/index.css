@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css?family=Acme');
+
+:root {
+  font: 16px / 1 sans-serif;
+  font-family: 'Acme', sans-serif;
+}
+/* 
+@font-face {
+  font-family: 'Acme';
+  src: url('./img/Acme-Regular.ttf');
+} */
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  overflow: hidden;
+  font-family: 'Acme', sans-serif;
+}
+
+.sky {
+  background-image: url(./img/background.png);
+  background-size: contain;
+  /* background-repeat: */
+  height: 100rem;
+  width: 100%;
+}
+
+main p {
+  padding: 2.5rem;
+  margin: 1rem, 1.5rem, 1rem, 1.5rem;
+}
+
+.splash-header {
+  background-image: url(./img/header.png);
+  background-size: cover;
+  width: 100%;
+  height: 5.38rem;
+}
+
+.scroll {
+  background-image: url(./img/scroll.png);
+  background-size: cover;
+  width: 100%;
+  height: 18rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 8rem;
+  margin-bottom: 3rem;
+}
+
+input {
+  height: 1rem;
+  width: 15rem;
+  margin: 0.5rem;
+}
+.login {
+  display: flex;
+  flex-direction: column;
+  padding-left: 25%;
+  padding-bottom: 10%;
+  margin-top: 1rem;
+}
+
+.pagetype {
+  text-align: center;
+  margin-right: 1.5rem;
+}
+
+.wave-text {
+  color: whitesmoke;
+  padding-top: 1.75rem;
+}
+
+.backwaves {
+  background-image: url(./img/backwave.png);
+  background-size: 145%;
+  width: 110%;
+  height: 6rem;
+  margin-top: 8rem;
+  margin-left: -0.25rem;
+  margin-bottom: 0rem;
+
+  padding-top: 1.5rem;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: 3rem;
+  left: 0;
+}
+.midwaves {
+  background-image: url(./img/midwaves.png);
+  background-size: 125%;
+  width: 110%;
+  height: 5.65rem;
+  margin-top: -5.2rem;
+  margin-left: -0.25rem;
+  margin-bottom: 0rem;
+  position: fixed;
+  bottom: 2.65rem;
+  left: 0;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.frontwaves {
+  background-image: url(./img/frontwaves.png);
+  background-size: 125%;
+  width: 110%;
+  height: 5.25rem;
+  margin-top: -3rem;
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+  margin-bottom: 0rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+@media (min-width: 375px) {
+  .splash-header {
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-bottom: -2rem;
+  }
+  .scroll {
+    width: 90%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 6.4%;
+  }
+  .pagetype {
+    font-size: 2rem;
+    padding-top: 0rem;
+    margin-top: -5rem;
+  }
+  input {
+    margin-left: -2.35rem;
+  }
+  .backwaves {
+    height: 6.5rem;
+    background-repeat: no-repeat;
+  }
+  .midwaves {
+    height: 5.5rem;
+    background-repeat: no-repeat;
+  }
+  .front-waves {
+    height: 5rem;
+    background-repeat: no-repeat;
+  }
+
+  p {
+    margin-top: -2.75rem;
+    margin-bottom: -1rem;
+  }
+}
+
+@media (min-width: 500px) {
+  .scroll {
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 5%;
+    width: 100%;
+  }
+  .splash-header {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 6rem;
+  }
+  .backwaves {
+    margin-left: -0.5rem;
+    width: 110%;
+    height: 6.5rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+
+@media (min-width: 600px) {
+  .scroll {
+    margin-left: 8%;
+    width: 80%;
+  }
+  .splash-header {
+    height: 6.5rem;
+  }
+  .login {
+    padding-left: 12%;
+  }
+}
+@media (min-width: 650px) {
+  .scroll {
+    margin-left: 10%;
+    width: 75%;
+  }
+  .splash-header {
+    height: 7rem;
+  }
+  .frontwaves {
+    height: 5.4rem;
+  }
+}
+
+@media (min-width: 700px) {
+  .scroll {
+    margin-left: 15%;
+    width: 70%;
+  }
+  .splash-header {
+    height: 7.5rem;
+  }
+  .login {
+    padding-left: 10%;
+  }
+  .backwaves {
+    height: 7rem;
+    margin-top: 9rem;
+  }
+  .midwaves {
+    height: 7rem;
+  }
+  .frontwaves {
+    height: 6.3rem;
+  }
+}
+
+@media (min-width: 750px) {
+  .scroll {
+    margin-left: 25%;
+    width: 65%;
+  }
+  .splash-header {
+    height: 8.5rem;
+  }
+}
+
+@media (min-width: 800px) {
+  .scroll {
+    margin-left: 30%;
+    width: 60%;
+  }
+  .splash-header {
+    height: 9rem;
+  }
+  .login {
+    padding-left: 10%;
+  }
+}
+
+@media (min-width: 850px) {
+  .splash-header {
+    height: 9.5rem;
+  }
+  .backwaves {
+    height: 8rem;
+  }
+  .midwaves {
+    height: 8rem;
+  }
+  .frontwaves {
+    height: 7.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .scroll {
+    margin-left: 33%;
+    width: 50%;
+  }
+  .splash-header {
+    height: 10rem;
+  }
+
+  .login {
+    padding-left: none;
+  }
+}
+
+@media (min-width: 1000px) {
+  .scroll {
+    margin-left: 33%;
+    width: 45%;
+  }
+  .splash-header {
+    height: 11rem;
+    margin-bottom: -4rem;
+  }
+  .login {
+    padding-left: none;
+  }
+  .backwaves {
+    height: 9rem;
+  }
+  .midwaves {
+    height: 8.5rem;
+    margin-bottom: -0.5rem;
+  }
+  .frontwaves {
+    height: 8rem;
+  }
+}
+
+@media (min-width: 1080px) {
+  .scroll {
+    margin-left: 33%;
+    width: 40%;
+  }
+  .splash-header {
+    height: 12rem;
+  }
+  .pagetype {
+    margin-right: 3rem;
+  }
+  .login {
+    padding-left: none;
+  }
+}
+
+@media (min-width: 1100px) {
+  .splash-header {
+    height: 13rem;
+  }
+}
+
+@media (min-width: 1150px) {
+  .splash-header {
+    height: 14rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .splash-header {
+    height: 15rem;
+    margin-bottom: -8rem;
+  }
+}
