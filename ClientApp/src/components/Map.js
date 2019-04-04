@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactMapGL, { Marker } from 'react-map-gl'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fab } from '@fortawesome/free-brands-svg-icons'
+// import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons'
 import { faGem } from '@fortawesome/free-solid-svg-icons'
 library.add(faGem)
@@ -26,7 +26,7 @@ class Map extends Component {
       userMarkers: [[props.lat, props.lng]],
       TOKEN:
         'pk.eyJ1Ijoid2lsbGtzaGFrZXMiLCJhIjoiY2p0eng5ejgyMzlmbTQzbTI4MG80aXd3ZSJ9.he43q3C_S0uhZD9wRnGtsQ',
-      incrementor: 0
+      dropMode: false
     }
   }
   randomLatLng = () => {
@@ -85,11 +85,21 @@ class Map extends Component {
     })
   }
 
-  dropChest = event => {
+  allowDropMode = () => {
     this.setState({
-      userMarkers: this.state.userMarkers.concat([
-        [event.lngLat[1], event.lngLat[0]]
-      ])
+      dropMode: true
+    })
+  }
+  dropChest = event => {
+    if (this.state.dropMode === true) {
+      this.setState({
+        userMarkers: this.state.userMarkers.concat([
+          [event.lngLat[1], event.lngLat[0]]
+        ])
+      })
+    }
+    this.setState({
+      dropMode: false
     })
   }
   componentDidMount() {
@@ -97,29 +107,32 @@ class Map extends Component {
   }
   render() {
     return (
-      <ReactMapGL
-        {...this.state.viewport}
-        onViewportChange={viewport => this.setState({ viewport })}
-        mapboxApiAccessToken={this.state.TOKEN}
-        onClick={this.dropChest}>
+      <div>
+        <ReactMapGL
+          {...this.state.viewport}
+          onViewportChange={viewport => this.setState({ viewport })}
+          mapboxApiAccessToken={this.state.TOKEN}
+          onClick={this.dropChest}>
+          {this.state.userMarkers.map((marker, i) => {
+            // console.log(marker)
+            return (
+              <Marker key={i} latitude={marker[0]} longitude={marker[1]}>
+                <FontAwesomeIcon icon="gem" />
+              </Marker>
+            )
+          })}
+          <Marker
+            latitude={this.state.userLocation.lat}
+            longitude={this.state.userLocation.lng}
+            offsetLeft={0}
+            offsetTop={0}>
+            <FontAwesomeIcon icon="skull-crossbones" />
+          </Marker>
+        </ReactMapGL>
         <button onClick={this.abortDrop}>ABORT ABORT ABORT</button>
         <button onClick={this.beginDropping}>ADD MORE</button>
-        {this.state.userMarkers.map((marker, i) => {
-          // console.log(marker)
-          return (
-            <Marker key={i} latitude={marker[0]} longitude={marker[1]}>
-              <FontAwesomeIcon icon="gem" />
-            </Marker>
-          )
-        })}
-        <Marker
-          latitude={this.state.userLocation.lat}
-          longitude={this.state.userLocation.lng}
-          offsetLeft={0}
-          offsetTop={0}>
-          <FontAwesomeIcon icon="skull-crossbones" />
-        </Marker>
-      </ReactMapGL>
+        <button onClick={this.allowDropMode}>Bury Treasure! </button>
+      </div>
     )
   }
 }
