@@ -74,8 +74,8 @@ class Map extends Component {
         latitude: props.lat,
         longitude: props.lng,
         zoom: 17,
-        maxZoom: 25
-        // minZoom: 15
+        maxZoom: 20,
+        minZoom: 15
       },
       userLocation: {
         lat: props.lat,
@@ -112,12 +112,13 @@ class Map extends Component {
           {...this.state.viewport}
           onViewportChange={viewport => this.setState({ viewport })}
           mapboxApiAccessToken={this.state.TOKEN}
-          onClick={this.dropChest}>
+          onClick={this.dropChest}
+          className="Map">
           {this.state.userMarkers.map((marker, i) => {
             // console.log(marker)
             return (
               <Marker key={i} latitude={marker[0]} longitude={marker[1]}>
-                <FontAwesomeIcon icon="gem" />
+                <FontAwesomeIcon icon="gem" size="lg" />
               </Marker>
             )
           })}
@@ -126,12 +127,18 @@ class Map extends Component {
             longitude={this.state.userLocation.lng}
             offsetLeft={0}
             offsetTop={0}>
-            <FontAwesomeIcon icon="skull-crossbones" />
+            <FontAwesomeIcon icon="skull-crossbones" size="2x" />
           </Marker>
         </ReactMapGL>
-        <button onClick={this.abortDrop}>ABORT ABORT ABORT</button>
-        <button onClick={this.beginDropping}>ADD MORE</button>
-        <button onClick={this.allowDropMode}>Bury Treasure! </button>
+        <button className="button1" onClick={this.abortDrop}>
+          ABORT ABORT ABORT
+        </button>
+        <button className="button2" onClick={this.beginDropping}>
+          ADD MORE
+        </button>
+        <button className="button3" onClick={this.allowDropMode}>
+          Bury Treasure!{' '}
+        </button>
       </div>
     )
   }

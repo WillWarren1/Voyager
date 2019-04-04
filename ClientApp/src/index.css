@@ -9,7 +9,26 @@
   font-family: 'Acme';
   src: url('./img/Acme-Regular.ttf');
 } */
-
+.Map {
+  margin-bottom: -2rem;
+}
+.button1 {
+  position: absolute;
+  bottom: 10%;
+  margin: 1rem;
+}
+.button2 {
+  position: absolute;
+  bottom: 10%;
+  left: 12rem;
+  margin: 1rem;
+}
+.button3 {
+  position: absolute;
+  bottom: 10%;
+  left: 20rem;
+  margin: 1rem;
+}
 html {
   height: 100%;
 }
