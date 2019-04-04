@@ -102,6 +102,20 @@ class Map extends Component {
       dropMode: false
     })
   }
+  examineTreasure = marker => {
+    console.log(marker)
+    // console.log(this.state.userLocation)
+    let distance = Math.sqrt(
+      Math.pow(this.state.userLocation.lat - marker[0], 2) +
+        Math.pow(this.state.userLocation.lng - marker[1], 2)
+    )
+    //   this.state.userLocation.lat +
+    //   this.state.userLocation.lng -
+    //   (marker[0] + marker[1])
+
+    console.log(distance * 1000)
+  }
+
   componentDidMount() {
     this.beginDropping()
   }
@@ -118,7 +132,11 @@ class Map extends Component {
             // console.log(marker)
             return (
               <Marker key={i} latitude={marker[0]} longitude={marker[1]}>
-                <FontAwesomeIcon icon="gem" size="lg" />
+                <FontAwesomeIcon
+                  icon="gem"
+                  size="lg"
+                  onClick={() => this.examineTreasure(marker)}
+                />
               </Marker>
             )
           })}
