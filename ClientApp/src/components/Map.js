@@ -17,14 +17,14 @@ class Map extends Component {
         lng: props.lng
       },
       viewport: {
-        width: 1000,
-        height: 1000,
+        width: '100%',
+        height: '100%',
         latitude: props.lat,
         longitude: props.lng,
         zoom: 3
       },
       userMarkers: [[props.lat, props.lng]],
-      TOKEN:
+      token:
         'pk.eyJ1Ijoid2lsbGtzaGFrZXMiLCJhIjoiY2p0eng5ejgyMzlmbTQzbTI4MG80aXd3ZSJ9.he43q3C_S0uhZD9wRnGtsQ',
       dropMode: false
     }
@@ -67,12 +67,13 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(props) {
+    console.log([props.lat, props.lng])
     this.setState({
       viewport: {
-        width: 1000,
-        height: 1000,
-        latitude: props.lat,
-        longitude: props.lng,
+        width: '100%',
+        height: '100%',
+        latitude: 27.7709355,
+        longitude: -82.6633295,
         zoom: 17,
         maxZoom: 20,
         minZoom: 15
@@ -109,10 +110,6 @@ class Map extends Component {
       Math.pow(this.state.userLocation.lat - marker[0], 2) +
         Math.pow(this.state.userLocation.lng - marker[1], 2)
     )
-    //   this.state.userLocation.lat +
-    //   this.state.userLocation.lng -
-    //   (marker[0] + marker[1])
-
     console.log(distance * 1000)
   }
 
@@ -125,7 +122,7 @@ class Map extends Component {
         <ReactMapGL
           {...this.state.viewport}
           onViewportChange={viewport => this.setState({ viewport })}
-          mapboxApiAccessToken={this.state.TOKEN}
+          mapboxApiAccessToken={this.state.token}
           onClick={this.dropChest}
           className="Map">
           {this.state.userMarkers.map((marker, i) => {
@@ -144,7 +141,9 @@ class Map extends Component {
             latitude={this.state.userLocation.lat}
             longitude={this.state.userLocation.lng}
             offsetLeft={0}
-            offsetTop={0}>
+            offsetTop={0}
+            // mapStyle={'mapbox://styles/mapbox/basic-v9'}
+          >
             <FontAwesomeIcon icon="skull-crossbones" size="2x" />
           </Marker>
         </ReactMapGL>
@@ -155,7 +154,7 @@ class Map extends Component {
           ADD MORE
         </button>
         <button className="button3" onClick={this.allowDropMode}>
-          Bury Treasure!{' '}
+          Bury Treasure!
         </button>
       </div>
     )

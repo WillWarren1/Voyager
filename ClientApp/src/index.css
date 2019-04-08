@@ -4,6 +4,15 @@
   font: 16px / 1 sans-serif;
   font-family: 'Acme', sans-serif;
 }
+
+#root,
+#root div,
+body,
+.full-height {
+  height: 100%;
+  width: 100%;
+}
+
 /* 
 @font-face {
   font-family: 'Acme';
