@@ -25,7 +25,7 @@ class Map extends Component {
       },
       userMarkers: [[props.lat, props.lng]],
       token:
-        'pk.eyJ1Ijoid2lsbGtzaGFrZXMiLCJhIjoiY2p0eng5ejgyMzlmbTQzbTI4MG80aXd3ZSJ9.he43q3C_S0uhZD9wRnGtsQ',
+        'pk.eyJ1Ijoid2lsbGtzaGFrZXMiLCJhIjoiY2p1OGd1c3BiMDNqajRkcXF5ZG5ycjh1eiJ9.bj4k4amBd2GhmmXlPVh9Og',
       dropMode: false
     }
   }
@@ -72,8 +72,8 @@ class Map extends Component {
       viewport: {
         width: '100%',
         height: '100%',
-        latitude: 27.7709355,
-        longitude: -82.6633295,
+        latitude: props.lat,
+        longitude: props.lng,
         zoom: 17,
         maxZoom: 20,
         minZoom: 15
@@ -137,13 +137,13 @@ class Map extends Component {
               </Marker>
             )
           })}
+
           <Marker
             latitude={this.state.userLocation.lat}
             longitude={this.state.userLocation.lng}
             offsetLeft={0}
             offsetTop={0}
-            // mapStyle={'mapbox://styles/mapbox/basic-v9'}
-          >
+            mapStyle={'mapbox://styles/mapbox/basic-v9'}>
             <FontAwesomeIcon icon="skull-crossbones" size="2x" />
           </Marker>
         </ReactMapGL>
