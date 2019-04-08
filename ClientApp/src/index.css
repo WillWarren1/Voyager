@@ -188,7 +188,7 @@ a {
     background-repeat: no-repeat;
   }
 
-  p {
+  .info-text {
     margin-top: -2.75rem;
     margin-bottom: -1rem;
   }

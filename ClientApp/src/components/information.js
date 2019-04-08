@@ -7,7 +7,7 @@ class Information extends Component {
         <header className="splash-header" />
         <main className="scroll">
           <h1 className="pagetype">{this.props.pageType}</h1>
-          <p>
+          <p className="info-text">
             Lorem Ipsum text will go here explaining what the game is/what tech
             was used to make it, sorry it's not here. I'm still drafting
           </p>

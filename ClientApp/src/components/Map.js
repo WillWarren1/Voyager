@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactMapGL, { Marker } from 'react-map-gl'
+import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,6 +13,8 @@ class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      popupInfo: null,
+      popupData: null,
       userLocation: {
         lat: props.lat,
         lng: props.lng
@@ -113,9 +115,44 @@ class Map extends Component {
     )
     let distanceValue = distance * 1000
     console.log(distanceValue)
-    axios
-      .get('https://localhost:5001/api/Treasures/1')
-      .then(resp => console.log({ resp }))
+    this.setState({
+      popupInfo: marker
+    })
+  }
+  renderPopup = () => {
+    const popupInfo = this.state.popupInfo
+    const popupData = this.state.popupData
+    if (!popupInfo) {
+      return
+    }
+    axios.get('https://localhost:5001/api/Treasures/1').then(resp =>
+      this.setState({
+        popupData: resp.data
+      })
+    )
+    // ,
+    // console.log({ resp })
+    // () => {
+    // if (popupData) {
+    return (
+      <Popup
+        tipSize={10}
+        anchor="bottom"
+        latitude={popupInfo[0]}
+        longitude={popupInfo[1]}
+        closeOnClick={false}
+        offsetLeft={13}
+        onClose={() => {
+          this.setState({ popupInfo: null })
+        }}>
+        <div>
+          <p>checking...</p>
+        </div>
+      </Popup>
+    )
+    // }
+    // }
+    // )
   }
 
   componentDidMount() {
@@ -131,6 +168,7 @@ class Map extends Component {
           onClick={this.dropChest}
           className="Map"
           mapStyle={'mapbox://styles/mapbox/streets-v8'}>
+          {this.renderPopup()}
           {this.state.userMarkers.map((marker, i) => {
             // console.log(marker)
             return (
