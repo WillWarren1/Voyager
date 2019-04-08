@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactMapGL, { Marker } from 'react-map-gl'
+import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -110,7 +111,11 @@ class Map extends Component {
       Math.pow(this.state.userLocation.lat - marker[0], 2) +
         Math.pow(this.state.userLocation.lng - marker[1], 2)
     )
-    console.log(distance * 1000)
+    let distanceValue = distance * 1000
+    console.log(distanceValue)
+    axios
+      .get('https://localhost:5001/api/Treasures/1')
+      .then(resp => console.log({ resp }))
   }
 
   componentDidMount() {
