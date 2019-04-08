@@ -118,6 +118,11 @@ class Map extends Component {
     this.setState({
       popupInfo: marker
     })
+    axios.get('https://localhost:5001/api/Treasures/1').then(resp =>
+      this.setState({
+        popupData: resp.data
+      })
+    )
   }
   renderPopup = () => {
     const popupInfo = this.state.popupInfo
@@ -125,15 +130,9 @@ class Map extends Component {
     if (!popupInfo) {
       return
     }
-    axios.get('https://localhost:5001/api/Treasures/1').then(resp =>
-      this.setState({
-        popupData: resp.data
-      })
-    )
-    // ,
-    // console.log({ resp })
-    // () => {
-    // if (popupData) {
+    const message = popupData
+      ? popupData.value + ' gold doubloons'
+      : 'opening chest...'
     return (
       <Popup
         tipSize={10}
@@ -146,7 +145,7 @@ class Map extends Component {
           this.setState({ popupInfo: null })
         }}>
         <div>
-          <p>checking...</p>
+          <p>{message}</p>
         </div>
       </Popup>
     )
