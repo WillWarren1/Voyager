@@ -129,7 +129,8 @@ class Map extends Component {
           onViewportChange={viewport => this.setState({ viewport })}
           mapboxApiAccessToken={this.state.token}
           onClick={this.dropChest}
-          className="Map">
+          className="Map"
+          mapStyle={'mapbox://styles/mapbox/streets-v8'}>
           {this.state.userMarkers.map((marker, i) => {
             // console.log(marker)
             return (
@@ -147,8 +148,7 @@ class Map extends Component {
             latitude={this.state.userLocation.lat}
             longitude={this.state.userLocation.lng}
             offsetLeft={0}
-            offsetTop={0}
-            mapStyle={'mapbox://styles/mapbox/basic-v9'}>
+            offsetTop={0}>
             <FontAwesomeIcon icon="skull-crossbones" size="2x" />
           </Marker>
         </ReactMapGL>
