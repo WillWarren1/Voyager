@@ -146,7 +146,7 @@ class Map extends Component {
         },
         () => {
           // console.log(this.state.popupData)
-          axios.post('https://localhost:5001/api/Treasures', {
+          axios.post('/api/Treasures', {
             value: this.state.popupData.value,
             latitude: this.state.popupData.coordinates[0],
             longitude: this.state.popupData.coordinates[1]
