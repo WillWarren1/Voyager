@@ -8,12 +8,12 @@ namespace Voyager.Models
 
     public int Value { get; set; }
 
-    public bool IsCaptured { get; set; } = false;
+    public bool IsCaptured { get; set; } = true;
 
-    public bool IsPlayers { get; set; } = false;
+    public string BelongsToPlayer { get; set; }
 
-    public double Latitude { get; set; }
+    public double? Latitude { get; set; }
 
-    public double Longitude { get; set; }
+    public double? Longitude { get; set; }
   }
 }

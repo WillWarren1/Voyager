@@ -22,8 +22,8 @@ class Map extends Component {
       viewport: {
         width: '100%',
         height: '100%',
-        latitude: props.lat,
-        longitude: props.lng,
+        latitude: 27.7709662,
+        longitude: -82.6633524,
         zoom: 3
       },
       userMarkers: [[props.lat, props.lng]],

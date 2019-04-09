@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Voyager.Models
 {
@@ -11,5 +12,7 @@ namespace Voyager.Models
     public int? AmountOfTreasure { get; set; }
 
     public int Renown { get; set; }
+
+    public List<Treasure> CapturedTreasure { get; set; }
   }
 }

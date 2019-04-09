@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using content;
@@ -9,9 +10,10 @@ using content;
 namespace content.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190409125940_AddedNullableCoordinates")]
+    partial class AddedNullableCoordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,30 +42,19 @@ namespace content.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BelongsToPlayer");
-
                     b.Property<bool>("IsCaptured");
+
+                    b.Property<bool>("IsPlayers");
 
                     b.Property<double?>("Latitude");
 
                     b.Property<double?>("Longitude");
 
-                    b.Property<int?>("PlayerId");
-
                     b.Property<int>("Value");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlayerId");
-
                     b.ToTable("Treasures");
-                });
-
-            modelBuilder.Entity("Voyager.Models.Treasure", b =>
-                {
-                    b.HasOne("Voyager.Models.Player")
-                        .WithMany("CapturedTreasure")
-                        .HasForeignKey("PlayerId");
                 });
 #pragma warning restore 612, 618
         }
