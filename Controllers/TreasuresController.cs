@@ -56,6 +56,7 @@ namespace content.Controllers
       try
       {
         await _context.SaveChangesAsync();
+        return Ok();
       }
       catch (DbUpdateConcurrencyException)
       {
@@ -69,7 +70,7 @@ namespace content.Controllers
         }
       }
 
-      return NoContent();
+      //   return NoContent();
     }
 
     // POST: api/Treasures
@@ -77,6 +78,12 @@ namespace content.Controllers
     public async Task<ActionResult<Treasure>> PostTreasure(Treasure treasure)
     {
       _context.Treasures.Add(treasure);
+      var treasureId = treasure.Id;
+      await _context.SaveChangesAsync();
+      // go to player table
+      var player = _context.Players.FirstOrDefault(f => f.Id == 1);
+
+      player.CapturedTreasure.Add(treasure);
       await _context.SaveChangesAsync();
 
       return CreatedAtAction("GetTreasure", new { id = treasure.Id }, treasure);

@@ -32,7 +32,7 @@ namespace content.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<Player>> GetPlayer(int id)
     {
-      var player = await _context.Players.FindAsync(id);
+      var player = await _context.Players.Include(i => i.CapturedTreasure).FirstOrDefaultAsync(f => f.Id == id);
 
       if (player == null)
       {
@@ -56,6 +56,7 @@ namespace content.Controllers
       try
       {
         await _context.SaveChangesAsync();
+        return Ok();
       }
       catch (DbUpdateConcurrencyException)
       {
@@ -69,7 +70,7 @@ namespace content.Controllers
         }
       }
 
-      return NoContent();
+      //   return NoContent();
     }
 
     // POST: api/Players

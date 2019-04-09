@@ -29,7 +29,20 @@ class Map extends Component {
       userMarkers: [[props.lat, props.lng]],
       token:
         'pk.eyJ1Ijoid2lsbGtzaGFrZXMiLCJhIjoiY2p1OGd1c3BiMDNqajRkcXF5ZG5ycjh1eiJ9.bj4k4amBd2GhmmXlPVh9Og',
-      dropMode: false
+      dropMode: false,
+      treasureValues: [
+        500,
+        500,
+        500,
+        500,
+        500,
+        1000,
+        1000,
+        1000,
+        1500,
+        1500,
+        2500
+      ]
     }
   }
   randomLatLng = () => {
@@ -43,6 +56,11 @@ class Map extends Component {
     result[1] = y + this.state.userLocation.lng
     console.log(result)
     return result
+  }
+
+  randomValue = () => {
+    let index = Math.floor(Math.random() * 11)
+    return this.state.treasureValues[index]
   }
 
   beginDropping = () => {
@@ -113,16 +131,31 @@ class Map extends Component {
       Math.pow(this.state.userLocation.lat - marker[0], 2) +
         Math.pow(this.state.userLocation.lng - marker[1], 2)
     )
+
     let distanceValue = distance * 1000
     console.log(distanceValue)
-    this.setState({
-      popupInfo: marker
-    })
-    axios.get('https://localhost:5001/api/Treasures/1').then(resp =>
+
+    if (distanceValue < 0.2) {
       this.setState({
-        popupData: resp.data
+        popupInfo: marker
       })
-    )
+
+      this.setState(
+        {
+          popupData: { coordinates: marker, value: this.randomValue() }
+        },
+        () => {
+          // console.log(this.state.popupData)
+          axios.post('https://localhost:5001/api/Treasures', {
+            value: this.state.popupData.value,
+            latitude: this.state.popupData.coordinates[0],
+            longitude: this.state.popupData.coordinates[1]
+          })
+        }
+      )
+    } else {
+      return
+    }
   }
   renderPopup = () => {
     const popupInfo = this.state.popupInfo
