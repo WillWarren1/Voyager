@@ -135,7 +135,7 @@ class Map extends Component {
     let distanceValue = distance * 1000
     console.log(distanceValue)
 
-    if (distanceValue < 0.2) {
+    if (distanceValue <= 0.2) {
       this.setState({
         popupInfo: marker
       })
@@ -175,7 +175,17 @@ class Map extends Component {
         closeOnClick={false}
         offsetLeft={13}
         onClose={() => {
-          this.setState({ popupInfo: null })
+          let i = this.state.userMarkers.filter(
+            coord =>
+              !coord.includes(
+                popupData.coordinates[0] && popupData.coordinates[1]
+              )
+          )
+          console.log(i)
+          this.setState({
+            popupInfo: null,
+            userMarkers: i
+          })
         }}>
         <div>
           <p>{message}</p>

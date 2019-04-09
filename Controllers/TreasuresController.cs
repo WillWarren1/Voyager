@@ -82,8 +82,8 @@ namespace content.Controllers
       await _context.SaveChangesAsync();
       // go to player table
       var player = _context.Players.FirstOrDefault(f => f.Id == 1);
-
       player.CapturedTreasure.Add(treasure);
+      player.AmountOfTreasure = player.AmountOfTreasure + treasure.Value;
       await _context.SaveChangesAsync();
 
       return CreatedAtAction("GetTreasure", new { id = treasure.Id }, treasure);
