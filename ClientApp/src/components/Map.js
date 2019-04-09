@@ -157,6 +157,16 @@ class Map extends Component {
       return
     }
   }
+
+  removeTreasureFromMap = coordinates => {
+    let i = this.state.userMarkers.filter(
+      coord => !coord.includes(coordinates[0] && coordinates[1])
+    )
+    console.log(i)
+    this.setState({
+      userMarkers: i
+    })
+  }
   renderPopup = () => {
     const popupInfo = this.state.popupInfo
     const popupData = this.state.popupData
@@ -175,16 +185,9 @@ class Map extends Component {
         closeOnClick={false}
         offsetLeft={13}
         onClose={() => {
-          let i = this.state.userMarkers.filter(
-            coord =>
-              !coord.includes(
-                popupData.coordinates[0] && popupData.coordinates[1]
-              )
-          )
-          console.log(i)
+          this.removeTreasureFromMap(popupData.coordinates)
           this.setState({
-            popupInfo: null,
-            userMarkers: i
+            popupInfo: null
           })
         }}>
         <div>
