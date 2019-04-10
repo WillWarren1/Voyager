@@ -42,7 +42,8 @@ class Map extends Component {
         1500,
         1500,
         2500
-      ]
+      ],
+      isClickable: true
     }
   }
   randomLatLng = () => {
@@ -57,7 +58,18 @@ class Map extends Component {
     console.log(result)
     return result
   }
+  openingLatLng = (lat, lng) => {
+    let result = []
 
+    let howFar = 0.0035 * Math.sqrt(Math.random())
+    let whichDirection = 2 * Math.PI * Math.random()
+    let x = howFar * Math.cos(whichDirection)
+    let y = howFar * Math.sin(whichDirection)
+    result[0] = x + lat
+    result[1] = y + lng
+    console.log(result)
+    return result
+  }
   randomValue = () => {
     let index = Math.floor(Math.random() * 11)
     return this.state.treasureValues[index]
@@ -77,7 +89,7 @@ class Map extends Component {
             [this.randomLatLng()]
           )
         })
-      }, 5000)
+      }, 900000)
     } else {
       clearInterval(this.interval)
     }
@@ -89,6 +101,7 @@ class Map extends Component {
 
   componentWillReceiveProps(props) {
     console.log([props.lat, props.lng])
+
     this.setState({
       viewport: {
         width: '100%',
@@ -103,7 +116,13 @@ class Map extends Component {
         lat: props.lat,
         lng: props.lng
       },
-      userMarkers: []
+      userMarkers: this.state.userMarkers.concat(
+        [this.openingLatLng(props.lat, props.lng)],
+        [this.openingLatLng(props.lat, props.lng)],
+        [this.openingLatLng(props.lat, props.lng)],
+        [this.openingLatLng(props.lat, props.lng)],
+        [this.openingLatLng(props.lat, props.lng)]
+      )
     })
   }
 
@@ -134,27 +153,30 @@ class Map extends Component {
 
     let distanceValue = distance * 1000
     console.log(distanceValue)
+    if (this.state.isClickable) {
+      if (distanceValue <= 0.2) {
+        this.setState({
+          popupInfo: marker
+        })
 
-    if (distanceValue <= 0.2) {
-      this.setState({
-        popupInfo: marker
-      })
-
-      this.setState(
-        {
-          popupData: { coordinates: marker, value: this.randomValue() }
-        },
-        () => {
-          // console.log(this.state.popupData)
-          axios.post('/api/Treasures', {
-            value: this.state.popupData.value,
-            latitude: this.state.popupData.coordinates[0],
-            longitude: this.state.popupData.coordinates[1]
-          })
-        }
-      )
-    } else {
-      return
+        this.setState(
+          {
+            popupData: { coordinates: marker, value: this.randomValue() }
+          },
+          () => {
+            // console.log(this.state.popupData)
+            axios
+              .post('/api/Treasures', {
+                value: this.state.popupData.value,
+                latitude: this.state.popupData.coordinates[0],
+                longitude: this.state.popupData.coordinates[1]
+              })
+              .then(this.setState({ isClickable: false }))
+          }
+        )
+      } else {
+        return
+      }
     }
   }
 
@@ -187,7 +209,8 @@ class Map extends Component {
         onClose={() => {
           this.removeTreasureFromMap(popupData.coordinates)
           this.setState({
-            popupInfo: null
+            popupInfo: null,
+            isClickable: true
           })
         }}>
         <div>
