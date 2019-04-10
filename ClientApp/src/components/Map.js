@@ -19,6 +19,7 @@ class Map extends Component {
         lat: props.lat,
         lng: props.lng
       },
+      //this controls aspects of the map's viewport, think of it like a window to the map
       viewport: {
         width: '100%',
         height: '100%',
@@ -26,10 +27,14 @@ class Map extends Component {
         longitude: -82.6633524,
         zoom: 3
       },
+      //these are going to be the glossary of coordinates of where the pins need to go
       userMarkers: [[props.lat, props.lng]],
+      //token to access the map
       token:
         'pk.eyJ1Ijoid2lsbGtzaGFrZXMiLCJhIjoiY2p1OGd1c3BiMDNqajRkcXF5ZG5ycjh1eiJ9.bj4k4amBd2GhmmXlPVh9Og',
+      //whether or not the player can drop their own treasure
       dropMode: false,
+      //possible values for treasures to contain
       treasureValues: [
         500,
         500,
@@ -43,9 +48,14 @@ class Map extends Component {
         1500,
         2500
       ],
+      //whether or not the user can click on a treasure that is within range
+      //this makes sure the user cannot keep clicking the same treasure to randomly
+      //generate new values and scam the treasure system before the treasure disappears
       isClickable: true
     }
   }
+
+  //randomly generates treasure within a certain radius of the user's location
   randomLatLng = () => {
     let result = []
 
@@ -58,6 +68,9 @@ class Map extends Component {
     console.log(result)
     return result
   }
+
+  //same as above, randomly generates treasure within a certain radius of user's location,
+  // but this is active the moment the user's location is received, only called once per session
   openingLatLng = (lat, lng) => {
     let result = []
 
@@ -70,11 +83,15 @@ class Map extends Component {
     console.log(result)
     return result
   }
+
+  //this random value function is used to randomly select a treasure value.
   randomValue = () => {
-    let index = Math.floor(Math.random() * 11)
+    let index = Math.floor(Math.random() * this.state.treasureValues.length)
     return this.state.treasureValues[index]
   }
 
+  //this function runs at an interval and randomly populates the map with five
+  //new treasure chests, whose value is undecided until clicked
   beginDropping = () => {
     if (this.state.userMarkers.length < 20) {
       this.interval = setInterval(() => {
@@ -95,10 +112,15 @@ class Map extends Component {
     }
   }
 
+  //abort button is for TESTING PURPOSES ONLY, it keeps the map from getting slow
+  //from thousands of pins appearing every three seconds
   abortDrop = () => {
     clearInterval(this.interval)
   }
 
+  //location is being passed in through the parent, so it is not present in state
+  //immediately upon page load. This function allows the page to update when location
+  //is received.
   componentWillReceiveProps(props) {
     console.log([props.lat, props.lng])
 
@@ -126,11 +148,14 @@ class Map extends Component {
     })
   }
 
+  //this function updates drop mode so that users may drop treasure
   allowDropMode = () => {
     this.setState({
       dropMode: true
     })
   }
+
+  //this function is the actual nonphysical act of dropping the treasure
   dropChest = event => {
     if (this.state.dropMode === true) {
       this.setState({
@@ -143,6 +168,11 @@ class Map extends Component {
       dropMode: false
     })
   }
+
+  //this is the act of clicking on a treasure chest, it calculates the distance...
+  //roughly... between the marker and the user, and if it's close enough the user
+  //may examine it, thus capturing the treasure and updating their history and amount
+  //of treasure
   examineTreasure = marker => {
     console.log(marker)
     // console.log(this.state.userLocation)
@@ -180,6 +210,9 @@ class Map extends Component {
     }
   }
 
+  //this filters out treasures that have been clicked on and removes them from the map
+  //since treasure generation is handled client-side, there's no back-end changes needed!
+  //Isn't that neat?
   removeTreasureFromMap = coordinates => {
     let i = this.state.userMarkers.filter(
       coord => !coord.includes(coordinates[0] && coordinates[1])
@@ -189,6 +222,8 @@ class Map extends Component {
       userMarkers: i
     })
   }
+
+  //this handles the rendering of popup windows, I use these to display the contents of treasure
   renderPopup = () => {
     const popupInfo = this.state.popupInfo
     const popupData = this.state.popupData
@@ -218,14 +253,17 @@ class Map extends Component {
         </div>
       </Popup>
     )
-    // }
-    // }
-    // )
   }
 
+  //this literally just starts the timer to drop more treasures, i could keep this elsewhere...
+  //but it really wouldnt make much of a difference.
   componentDidMount() {
     this.beginDropping()
   }
+
+  //and here's all the stuff the user will see! well.. not quite...
+  //they won't see the literal code but they'll see what it renders!
+  //like maps and pins and buttons and things! Fancy!
   render() {
     return (
       <div>
