@@ -32,13 +32,17 @@ namespace content.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<Player>> GetPlayer(int id)
     {
-      var player = await _context.Players.Include(i => i.CapturedTreasure).FirstOrDefaultAsync(f => f.Id == id);
-
+      var player = await _context
+        .Players
+        .Include(i => i.CapturedTreasure)
+        .FirstOrDefaultAsync(f => f.Id == id);
+      // .OrderByDescending(o => o.Id)
       if (player == null)
       {
         return NotFound();
       }
 
+      player.CapturedTreasure = player.CapturedTreasure.OrderByDescending(o => o.Id).ToList();
       return player;
     }
 

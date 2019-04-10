@@ -13,6 +13,8 @@ class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      showLog: false,
+      treasureLog: [],
       popupInfo: null,
       popupData: null,
       userLocation: {
@@ -123,7 +125,7 @@ class Map extends Component {
   //is received.
   componentWillReceiveProps(props) {
     console.log([props.lat, props.lng])
-
+    this.updateTreasureCount()
     this.setState({
       viewport: {
         width: '100%',
@@ -152,10 +154,13 @@ class Map extends Component {
 
   updateTreasureCount = () => {
     axios.get('api/Players/1').then(resp => {
-      this.setState({
-        username: resp.data.name,
-        amountOfTreasure: resp.data.amountOfTreasure
-      })
+      this.setState(
+        {
+          username: resp.data.name,
+          amountOfTreasure: resp.data.amountOfTreasure
+        },
+        console.log('received player data')
+      )
     })
   }
 
@@ -269,6 +274,34 @@ class Map extends Component {
     )
   }
 
+  viewLog = () => {
+    axios.get('/api/Players/1').then(resp => {
+      this.setState(
+        {
+          treasureLog: resp.data.capturedTreasure,
+          showLog: !this.state.showLog
+        }
+        // , () => {
+        // console.log(this.state.treasureLog)
+        // return (
+        // <div className="treasurelog">
+        //   <ul>
+        //     {this.state.treasureLog.map((treasure, i) => {
+        //       console.log(treasure)
+        //       return (
+        //         <li key={i}>
+        //           {treasure.id}: {treasure.value} gold, found at{' '}
+        //           {treasure.latitude}/{treasure.longitude}
+        //         </li>
+        //       )
+        //     })}
+        //   </ul>
+        // </div>
+      )
+      // })
+    })
+  }
+
   //this starts the treasure drop and gets user info
   componentDidMount() {
     this.beginDropping()
@@ -279,6 +312,7 @@ class Map extends Component {
   //they won't see the literal code but they'll see what it renders!
   //like maps and pins and buttons and things! Fancy!
   render() {
+    const visibility = this.state.showLog ? 'show' : 'hidden'
     return (
       <div>
         <ReactMapGL
@@ -310,10 +344,15 @@ class Map extends Component {
             <FontAwesomeIcon icon="skull-crossbones" size="2x" />
           </Marker>
         </ReactMapGL>
-        <section className="userinfo">
-          <p>{this.state.username}</p>
-          <p>{this.state.amountOfTreasure} gold</p>
-        </section>
+        <span>
+          <section className="userinfo">
+            <p>{this.state.username}</p>
+            <p>{this.state.amountOfTreasure} gold</p>
+          </section>
+          <section className="treasurelogbutton" onClick={this.viewLog}>
+            <p>Treasure log</p>
+          </section>
+        </span>
         <button className="button1" onClick={this.abortDrop}>
           ABORT ABORT ABORT
         </button>
@@ -323,6 +362,22 @@ class Map extends Component {
         <button className="button3" onClick={this.allowDropMode}>
           Bury Treasure!
         </button>
+        <div className={`treasurelog${visibility}`}>
+          <ul>
+            {this.state.treasureLog.map((treasure, i) => {
+              console.log(treasure)
+              if (i < 10) {
+                return (
+                  <li key={i}>
+                    {treasure.value} gold, from {treasure.latitude}/
+                    {treasure.longitude}
+                  </li>
+                )
+              }
+            })}
+          </ul>
+        </div>
+        {/* <section>{this.state.treasureLog[0].value}</section> */}
       </div>
     )
   }
