@@ -144,7 +144,18 @@ class Map extends Component {
         [this.openingLatLng(props.lat, props.lng)],
         [this.openingLatLng(props.lat, props.lng)],
         [this.openingLatLng(props.lat, props.lng)]
-      )
+      ),
+      username: '',
+      amountOfTreasure: 0
+    })
+  }
+
+  updateTreasureCount = () => {
+    axios.get('api/Players/1').then(resp => {
+      this.setState({
+        username: resp.data.name,
+        amountOfTreasure: resp.data.amountOfTreasure
+      })
     })
   }
 
@@ -194,14 +205,17 @@ class Map extends Component {
             popupData: { coordinates: marker, value: this.randomValue() }
           },
           () => {
-            // console.log(this.state.popupData)
             axios
               .post('/api/Treasures', {
                 value: this.state.popupData.value,
                 latitude: this.state.popupData.coordinates[0],
                 longitude: this.state.popupData.coordinates[1]
               })
-              .then(this.setState({ isClickable: false }))
+              .then(() => {
+                this.setState({ isClickable: false })
+                console.log('update treasure count')
+                this.updateTreasureCount()
+              })
           }
         )
       } else {
@@ -255,10 +269,10 @@ class Map extends Component {
     )
   }
 
-  //this literally just starts the timer to drop more treasures, i could keep this elsewhere...
-  //but it really wouldnt make much of a difference.
+  //this starts the treasure drop and gets user info
   componentDidMount() {
     this.beginDropping()
+    this.updateTreasureCount()
   }
 
   //and here's all the stuff the user will see! well.. not quite...
@@ -296,6 +310,10 @@ class Map extends Component {
             <FontAwesomeIcon icon="skull-crossbones" size="2x" />
           </Marker>
         </ReactMapGL>
+        <section className="userinfo">
+          <p>{this.state.username}</p>
+          <p>{this.state.amountOfTreasure} gold</p>
+        </section>
         <button className="button1" onClick={this.abortDrop}>
           ABORT ABORT ABORT
         </button>

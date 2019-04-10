@@ -77,6 +77,7 @@ namespace content.Controllers
     [HttpPost]
     public async Task<ActionResult<Treasure>> PostTreasure(Treasure treasure)
     {
+      Console.WriteLine(treasure.Value);
       _context.Treasures.Add(treasure);
       var treasureId = treasure.Id;
       await _context.SaveChangesAsync();
