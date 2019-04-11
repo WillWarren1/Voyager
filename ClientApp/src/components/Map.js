@@ -170,15 +170,26 @@ class Map extends Component {
   //this function is the actual nonphysical act of dropping the treasure
   dropChest = event => {
     if (this.state.dropMode === true) {
+      let distance = Math.sqrt(
+        Math.pow(this.state.userLocation.lat - event.lngLat[1], 2) +
+          Math.pow(this.state.userLocation.lng - event.lngLat[0], 2)
+      )
+      console.log(distance)
+      let distanceValue = distance * 1000
+      console.log(distanceValue)
+      if (distanceValue <= 0.25) {
+        this.setState({
+          userMarkers: this.state.userMarkers.concat([
+            [event.lngLat[1], event.lngLat[0]]
+          ])
+        })
+      } else {
+        return
+      }
       this.setState({
-        userMarkers: this.state.userMarkers.concat([
-          [event.lngLat[1], event.lngLat[0]]
-        ])
+        dropMode: false
       })
     }
-    this.setState({
-      dropMode: false
-    })
   }
 
   //this is the act of clicking on a treasure chest, it calculates the distance...
@@ -187,7 +198,6 @@ class Map extends Component {
   //of treasure
   examineTreasure = marker => {
     console.log(marker)
-    // console.log(this.state.userLocation)
     let distance = Math.sqrt(
       Math.pow(this.state.userLocation.lat - marker[0], 2) +
         Math.pow(this.state.userLocation.lng - marker[1], 2)
@@ -287,6 +297,16 @@ class Map extends Component {
   componentDidMount() {
     this.beginDropping()
     this.updateTreasureCount()
+    axios
+      .post('/api/Players', {
+        Name: 'Captain Tusktooth',
+        AmountOfTreasure: 9000,
+        Renown: 10,
+        CapturedTreasure: []
+      })
+      .then(resp => {
+        console.log({ resp })
+      })
   }
 
   //and here's all the stuff the user will see! well.. not quite...
@@ -306,7 +326,6 @@ class Map extends Component {
           mapStyle={'mapbox://styles/mapbox/streets-v8'}>
           {this.renderPopup()}
           {this.state.userMarkers.map((marker, i) => {
-            // console.log(marker)
             return (
               <Marker key={i} latitude={marker[0]} longitude={marker[1]}>
                 <img
@@ -362,8 +381,7 @@ class Map extends Component {
             is licensed by{' '}
             <a
               href="http://creativecommons.org/licenses/by/3.0/"
-              title="Creative Commons BY 3.0"
-              target="_blank">
+              title="Creative Commons BY 3.0">
               CC 3.0 BY
             </a>
           </div>
@@ -381,8 +399,7 @@ class Map extends Component {
             is licensed by{' '}
             <a
               href="http://creativecommons.org/licenses/by/3.0/"
-              title="Creative Commons BY 3.0"
-              target="_blank">
+              title="Creative Commons BY 3.0">
               CC 3.0 BY
             </a>
           </div>
@@ -405,6 +422,8 @@ class Map extends Component {
                     {treasure.longitude}
                   </li>
                 )
+              } else {
+                return console.log("you don't need this much")
               }
             })}
           </ul>
