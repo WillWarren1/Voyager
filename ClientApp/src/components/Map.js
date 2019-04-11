@@ -281,29 +281,10 @@ class Map extends Component {
   }
   viewLog = () => {
     axios.get('/api/Players/1').then(resp => {
-      this.setState(
-        {
-          treasureLog: resp.data.capturedTreasure,
-          showLog: !this.state.showLog
-        }
-        // , () => {
-        // console.log(this.state.treasureLog)
-        // return (
-        // <div className="treasurelog">
-        //   <ul>
-        //     {this.state.treasureLog.map((treasure, i) => {
-        //       console.log(treasure)
-        //       return (
-        //         <li key={i}>
-        //           {treasure.id}: {treasure.value} gold, found at{' '}
-        //           {treasure.latitude}/{treasure.longitude}
-        //         </li>
-        //       )
-        //     })}
-        //   </ul>
-        // </div>
-      )
-      // })
+      this.setState({
+        treasureLog: resp.data.capturedTreasure,
+        showLog: !this.state.showLog
+      })
     })
   }
 
@@ -410,8 +391,10 @@ class Map extends Component {
           </div>
           <section className="credit-text">
             {' '}
-            Map by{' '}
-            <a href="https://uber.github.io/react-map-gl/#/">Uber and React</a>
+            Map provided by{' '}
+            <a href="https://uber.github.io/react-map-gl/#/">
+              Uber's react mapbox library
+            </a>
           </section>
         </div>
         <div className={`treasurelog${visibility}`}>
