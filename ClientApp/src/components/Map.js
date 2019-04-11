@@ -13,6 +13,7 @@ class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      creditshow: false,
       showLog: false,
       treasureLog: [],
       popupInfo: null,
@@ -273,7 +274,11 @@ class Map extends Component {
       </Popup>
     )
   }
-
+  viewCredits = () => {
+    this.setState({
+      creditshow: !this.state.creditshow
+    })
+  }
   viewLog = () => {
     axios.get('/api/Players/1').then(resp => {
       this.setState(
@@ -313,6 +318,7 @@ class Map extends Component {
   //like maps and pins and buttons and things! Fancy!
   render() {
     const visibility = this.state.showLog ? 'show' : 'hidden'
+    const creditvis = this.state.creditshow ? 'show' : 'hidden'
     return (
       <div>
         <ReactMapGL
@@ -345,13 +351,13 @@ class Map extends Component {
           </Marker>
         </ReactMapGL>
         <span>
-          <section className="userinfo">
+          <button className="userinfo">
             <p>{this.state.username}</p>
             <p>{this.state.amountOfTreasure} gold</p>
-          </section>
-          <section className="treasurelogbutton" onClick={this.viewLog}>
+          </button>
+          <button className="treasurelogbutton" onClick={this.viewLog}>
             <p>Treasure log</p>
-          </section>
+          </button>
         </span>
         <button className="button1" onClick={this.abortDrop}>
           ABORT ABORT ABORT
@@ -362,6 +368,52 @@ class Map extends Component {
         <button className="button3" onClick={this.allowDropMode}>
           Bury Treasure!
         </button>
+        <button className="creditbutton" onClick={this.viewCredits}>
+          Credits
+        </button>
+        <div className={`credits${creditvis}`}>
+          <div className="credit-text">
+            Skull Icon made by{' '}
+            <a href="https://www.freepik.com/" title="Freepik">
+              Freepik
+            </a>{' '}
+            from{' '}
+            <a href="https://www.flaticon.com/" title="Flaticon">
+              www.flaticon.com
+            </a>{' '}
+            is licensed by{' '}
+            <a
+              href="http://creativecommons.org/licenses/by/3.0/"
+              title="Creative Commons BY 3.0"
+              target="_blank">
+              CC 3.0 BY
+            </a>
+          </div>
+          <div className="credit-text">
+            Treasure Icons made by{' '}
+            <a
+              href="https://www.flaticon.com/authors/darius-dan"
+              title="Darius Dan">
+              Darius Dan
+            </a>{' '}
+            from{' '}
+            <a href="https://www.flaticon.com/" title="Flaticon">
+              www.flaticon.com
+            </a>{' '}
+            is licensed by{' '}
+            <a
+              href="http://creativecommons.org/licenses/by/3.0/"
+              title="Creative Commons BY 3.0"
+              target="_blank">
+              CC 3.0 BY
+            </a>
+          </div>
+          <section className="credit-text">
+            {' '}
+            Map by{' '}
+            <a href="https://uber.github.io/react-map-gl/#/">Uber and React</a>
+          </section>
+        </div>
         <div className={`treasurelog${visibility}`}>
           <ul>
             {this.state.treasureLog.map((treasure, i) => {
