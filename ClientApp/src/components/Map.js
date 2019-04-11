@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons'
-import { faGem } from '@fortawesome/free-solid-svg-icons'
-library.add(faGem)
-library.add(faSkullCrossbones)
+import piracy from '../img/piracy.png'
+import chest from '../img/chest.png'
 
 class Map extends Component {
   constructor(props) {
@@ -314,9 +309,11 @@ class Map extends Component {
             // console.log(marker)
             return (
               <Marker key={i} latitude={marker[0]} longitude={marker[1]}>
-                <FontAwesomeIcon
-                  icon="gem"
-                  size="lg"
+                <img
+                  src={chest}
+                  alt="treasure chest"
+                  width={30}
+                  height={30}
                   onClick={() => this.examineTreasure(marker)}
                 />
               </Marker>
@@ -328,7 +325,7 @@ class Map extends Component {
             longitude={this.state.userLocation.lng}
             offsetLeft={0}
             offsetTop={0}>
-            <FontAwesomeIcon icon="skull-crossbones" size="2x" />
+            <img src={piracy} alt="pirate skull" width={50} height={50} />
           </Marker>
         </ReactMapGL>
         <span>
