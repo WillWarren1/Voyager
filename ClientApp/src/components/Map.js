@@ -196,7 +196,7 @@ class Map extends Component {
     let distanceValue = distance * 1000
     console.log(distanceValue)
     if (this.state.isClickable) {
-      if (distanceValue <= 0.2) {
+      if (distanceValue <= 0.25) {
         this.setState({
           popupInfo: marker
         })
@@ -337,12 +337,12 @@ class Map extends Component {
             <p>Treasure log</p>
           </button>
         </span>
-        <button className="button1" onClick={this.abortDrop}>
+        {/* <button className="button1" onClick={this.abortDrop}>
           ABORT ABORT ABORT
         </button>
         <button className="button2" onClick={this.beginDropping}>
           ADD MORE
-        </button>
+        </button> */}
         <button className="button3" onClick={this.allowDropMode}>
           Bury Treasure!
         </button>
