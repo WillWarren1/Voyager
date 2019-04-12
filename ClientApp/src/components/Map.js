@@ -297,16 +297,16 @@ class Map extends Component {
   componentDidMount() {
     this.beginDropping()
     this.updateTreasureCount()
-    axios
-      .post('/api/Players', {
-        Name: 'Captain Tusktooth',
-        AmountOfTreasure: 9000,
-        Renown: 10,
-        CapturedTreasure: []
-      })
-      .then(resp => {
-        console.log({ resp })
-      })
+    // axios
+    //   .post('/api/Players', {
+    //     Name: 'Captain Tusktooth',
+    //     AmountOfTreasure: 9000,
+    //     Renown: 10,
+    //     CapturedTreasure: []
+    //   })
+    //   .then(resp => {
+    //     console.log({ resp })
+    //   })
   }
 
   //and here's all the stuff the user will see! well.. not quite...
@@ -348,7 +348,7 @@ class Map extends Component {
           </Marker>
         </ReactMapGL>
         <span>
-          <button className="userinfo">
+          <button className="userinfo pulse">
             <p>{this.state.username}</p>
             <p>{this.state.amountOfTreasure} gold</p>
           </button>
