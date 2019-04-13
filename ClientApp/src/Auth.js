@@ -2,7 +2,7 @@ import auth0 from 'auth0-js'
 import history from './History'
 
 const DOMAIN = 'willkshakes.auth0.com'
-const CLIENT_ID = 'RwPPuF8J6bIAb4mRx3xZnhIhDYBEvWKs'
+const CLIENT_ID = 'f27JRjCL5Vn1oKGAxbBlV3UChWKAoiLz'
 
 class Auth {
   userProfile

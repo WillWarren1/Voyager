@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import auth from '../Auth'
 class AccountInput extends Component {
+  login = () => {
+    auth.login()
+  }
   render() {
     return (
       <div className="sky">
         <header className="splash-header" />
-        <main className="scroll">
-          <h1 className="pagetype">{this.props.pageType}</h1>
-          <section className="login">
-            <input type="text" placeholder="email or username" />
-            <input type="text" placeholder="password" />
-          </section>
+        <main className="scroll" onClick={this.login}>
+          <h1 className="pagetype">Click here to {this.props.pageType}</h1>
         </main>
         <footer className="backwaves" />
         <footer className="midwaves">

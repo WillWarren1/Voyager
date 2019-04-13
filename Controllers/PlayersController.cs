@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Voyager.Models;
 using content;
+using Microsoft.AspNetCore.Authorization;
 
 namespace content.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
+  [Authorize]
   public class PlayersController : ControllerBase
   {
     private readonly DatabaseContext _context;

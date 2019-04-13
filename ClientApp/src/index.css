@@ -242,7 +242,15 @@ input {
 
 .pagetype {
   text-align: center;
-  margin-right: 1.5rem;
+  margin-top: 4rem;
+  margin-right: 6rem;
+  margin-left: -2rem;
+}
+
+.pagetype:hover {
+  color: rgb(66, 23, 255);
+  text-shadow: 2px 2px #f0f0f0;
+  cursor: pointer;
 }
 
 .wave-text {
