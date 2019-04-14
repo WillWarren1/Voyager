@@ -13,6 +13,8 @@ namespace Voyager.Models
 
     public int Renown { get; set; }
 
+    public string userId { get; set; }
+
     public List<Treasure> CapturedTreasure { get; set; } = new List<Treasure>();
   }
 }

@@ -3,6 +3,7 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
 import piracy from '../img/piracy.png'
 import chest from '../img/chest.png'
+import auth from '../Auth'
 
 class Map extends Component {
   constructor(props) {
@@ -149,15 +150,21 @@ class Map extends Component {
   }
 
   updateTreasureCount = () => {
-    axios.get('api/Players/1').then(resp => {
-      this.setState(
-        {
-          username: resp.data.name,
-          amountOfTreasure: resp.data.amountOfTreasure
-        },
-        console.log('received player data')
-      )
-    })
+    axios
+      .get('api/Players/2', {
+        headers: {
+          Authorization: 'Bearer ' + auth.getAccessToken()
+        }
+      })
+      .then(resp => {
+        this.setState(
+          {
+            username: resp.data.name,
+            amountOfTreasure: resp.data.amountOfTreasure
+          },
+          console.log('received player data')
+        )
+      })
   }
 
   //this function updates drop mode so that users may drop treasure
@@ -217,11 +224,19 @@ class Map extends Component {
           },
           () => {
             axios
-              .post('/api/Treasures', {
-                value: this.state.popupData.value,
-                latitude: this.state.popupData.coordinates[0],
-                longitude: this.state.popupData.coordinates[1]
-              })
+              .post(
+                '/api/Treasures',
+                {
+                  headers: {
+                    Authorization: 'Bearer ' + auth.getAccessToken()
+                  }
+                },
+                {
+                  value: this.state.popupData.value,
+                  latitude: this.state.popupData.coordinates[0],
+                  longitude: this.state.popupData.coordinates[1]
+                }
+              )
               .then(() => {
                 this.setState({ isClickable: false })
                 console.log('update treasure count')
@@ -285,28 +300,48 @@ class Map extends Component {
     })
   }
   viewLog = () => {
-    axios.get('/api/Players/1').then(resp => {
-      this.setState({
-        treasureLog: resp.data.capturedTreasure,
-        showLog: !this.state.showLog
+    axios
+      .get('/api/Players/1', {
+        headers: {
+          Authorization: 'Bearer ' + auth.getAccessToken()
+        }
       })
-    })
+      .then(resp => {
+        this.setState({
+          treasureLog: resp.data.capturedTreasure,
+          showLog: !this.state.showLog
+        })
+      })
   }
 
   //this starts the treasure drop and gets user info
   componentDidMount() {
     this.beginDropping()
     this.updateTreasureCount()
-    // axios
-    //   .post('/api/Players', {
-    //     Name: 'Captain Tusktooth',
-    //     AmountOfTreasure: 9000,
-    //     Renown: 10,
-    //     CapturedTreasure: []
-    //   })
-    //   .then(resp => {
-    //     console.log({ resp })
-    //   })
+    if (auth.isAuthenticated()) {
+      axios.defaults.headers.common = {
+        Authorization: auth.authorizationHeader()
+      }
+    }
+    console.log(localStorage.getItem('access_token'))
+    axios
+      .post(
+        '/api/Players',
+        {
+          headers: {
+            Authorization: 'Bearer ' + auth.getAccessToken()
+          }
+        },
+        {
+          Name: 'Captain Tusktooth',
+          AmountOfTreasure: 9000,
+          Renown: 10,
+          CapturedTreasure: []
+        }
+      )
+      .then(resp => {
+        console.log({ resp })
+      })
   }
 
   //and here's all the stuff the user will see! well.. not quite...

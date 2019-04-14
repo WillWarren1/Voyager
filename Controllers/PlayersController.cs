@@ -16,6 +16,13 @@ namespace content.Controllers
   [Authorize]
   public class PlayersController : ControllerBase
   {
+
+    private string _getUserId(System.Security.Claims.ClaimsPrincipal user)
+    {
+      var userId = user.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/indentity/claims/nameidentifier").Value;
+      return userId;
+    }
+
     private readonly DatabaseContext _context;
 
     public PlayersController()
@@ -31,13 +38,13 @@ namespace content.Controllers
     }
 
     // GET: api/Players/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Player>> GetPlayer(int id)
+    [HttpGet("{userId}")]
+    public async Task<ActionResult<Player>> GetPlayer(string userId)
     {
       var player = await _context
         .Players
         .Include(i => i.CapturedTreasure)
-        .FirstOrDefaultAsync(f => f.Id == id);
+        .FirstOrDefaultAsync(f => f.userId == userId);
       // .OrderByDescending(o => o.Id)
       if (player == null)
       {
@@ -83,6 +90,8 @@ namespace content.Controllers
     [HttpPost]
     public async Task<ActionResult<Player>> PostPlayer(Player player)
     {
+      var _userId = _getUserId(User);
+      player.userId = _userId;
       _context.Players.Add(player);
       await _context.SaveChangesAsync();
 

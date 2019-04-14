@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace content
 {
@@ -26,6 +27,17 @@ namespace content
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      //Add Authentication
+      services.AddAuthentication(options =>
+      {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      }).AddJwtBearer(options =>
+      {
+        options.Authority = "https://willkshakes.auth0.com/";
+        options.Audience = "https://localhost5001/api";
+      });
+
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
        .AddJsonOptions(options =>
       {
@@ -38,6 +50,8 @@ namespace content
       {
         c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
       });
+
+
 
       // In production, the React files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
@@ -71,6 +85,8 @@ namespace content
       });
       app.UseStaticFiles();
       app.UseSpaStaticFiles();
+
+      app.UseAuthentication();
       app.UseMvc(routes =>
       {
         routes.MapRoute(
