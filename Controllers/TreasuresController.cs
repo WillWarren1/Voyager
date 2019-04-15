@@ -89,14 +89,14 @@ namespace content.Controllers
 
       var currentPlayer = await _context
             .Players
-            .FirstOrDefaultAsync(f => f.userId == currentUserId);
+            .Include(i => i.CapturedTreasure)
+            .FirstAsync(f => f.userId == currentUserId);
 
-      // var player = _context.Players.FirstOrDefault(f => f.Id == 1);
       currentPlayer.CapturedTreasure.Add(treasure);
       currentPlayer.AmountOfTreasure = currentPlayer.AmountOfTreasure + treasure.Value;
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction("GetTreasure", new { id = treasure.Id }, treasure);
+      return treasure;
     }
 
     // DELETE: api/Treasures/5

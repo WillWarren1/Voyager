@@ -1,3 +1,5 @@
+heroku container:login
+
 dotnet publish -c Release 
 
 cp dockerfile ./bin/release/netcoreapp2.2/publish

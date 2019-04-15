@@ -49,6 +49,24 @@ namespace content.Controllers
       return Ok(new { PlayerExists = rv });
     }
 
+    [HttpGet("playerTreasure")]
+    public async Task<ActionResult> GetPlayerTreasure()
+    {
+      var currentUser = User;
+      var currentUserId = User.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+      var currentPlayer = await _context
+            .Players
+            .Include(i => i.CapturedTreasure)
+            .FirstOrDefaultAsync(f => f.userId == currentUserId);
+
+      if (currentPlayer == null)
+      {
+        return NotFound();
+      }
+      return Ok(new { currentPlayer });
+    }
+
 
     [HttpGet("current")]
     public async Task<ActionResult> GetCurrentPlayer()
@@ -125,7 +143,7 @@ namespace content.Controllers
       _context.Players.Add(player);
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction("GetPlayer", new { id = player.Id }, player);
+      return player;
     }
 
     // DELETE: api/Players/5

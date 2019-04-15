@@ -246,7 +246,7 @@ class Map extends Component {
               )
               .then(() => {
                 this.setState({ isClickable: false })
-                console.log('update treasure count')
+                // console.log({ resp })
                 this.updateTreasureCount()
               })
           }
@@ -308,14 +308,15 @@ class Map extends Component {
   }
   viewLog = () => {
     axios
-      .get('/api/Players/current', {
+      .get('/api/Players/playerTreasure', {
         headers: {
           Authorization: auth.authorizationHeader()
         }
       })
       .then(resp => {
+        console.log({ resp })
         this.setState({
-          treasureLog: resp.data.capturedTreasure,
+          treasureLog: resp.data.currentPlayer.capturedTreasure,
           showLog: !this.state.showLog
         })
       })
@@ -325,6 +326,10 @@ class Map extends Component {
   componentDidMount() {
     this.beginDropping()
     this.updateTreasureCount()
+  }
+
+  logout = () => {
+    auth.logout()
   }
 
   //and here's all the stuff the user will see! well.. not quite...
@@ -370,6 +375,7 @@ class Map extends Component {
             className="userinfo pulse"
             //  onClick={this.updateUsername}
           >
+            <button onClick={this.logout}>log out</button>
             <p>{this.state.username}</p>
             <p>{this.state.amountOfTreasure} gold</p>
           </button>
