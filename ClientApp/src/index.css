@@ -135,7 +135,7 @@ ul {
 .button3 {
   position: absolute;
   bottom: 5%;
-  right: 42%;
+  right: 28%;
   margin: 1rem;
   background-color: rgb(43, 67, 175);
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 8px 22px 0 rgba(0, 0, 0, 0.19);
@@ -242,9 +242,10 @@ input {
 
 .pagetype {
   text-align: center;
-  margin-top: 4rem;
-  margin-right: 6rem;
-  margin-left: -2rem;
+  padding-top: 1rem;
+  margin-right: 3rem;
+  margin-left: 3rem;
+  margin-bottom: 3rem;
 }
 
 .pagetype:hover {
@@ -254,6 +255,7 @@ input {
 }
 
 .wave-text {
+  margin-left: -1rem;
   color: whitesmoke;
   padding-top: 1.75rem;
 }
@@ -340,7 +342,7 @@ a {
   }
 
   .info-text {
-    margin-top: -2.75rem;
+    margin-top: -4.75rem;
     margin-bottom: -1rem;
   }
 }

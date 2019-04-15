@@ -43,7 +43,6 @@ class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
         // check if the player exist
-        let playerExists = false
         axios
           .get('/api/Players/check', {
             headers: {
@@ -53,7 +52,6 @@ class Auth {
           .then(resp => {
             console.log({ resp })
             // if not then create
-            // console.log(playerExists)
             if (!resp.data.playerExists) {
               axios
                 .post(

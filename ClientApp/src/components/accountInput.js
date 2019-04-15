@@ -20,12 +20,6 @@ class AccountInput extends Component {
           <Link className="wave-text" to={`${this.props.link}`}>
             {this.props.alternativeInput}
           </Link>
-          <Link className="wave-text" to="/credits">
-            Credits
-          </Link>
-          <Link className="wave-text" to="/home">
-            Temporary Home Button
-          </Link>
         </footer>
         <footer className="frontwaves" />
       </div>

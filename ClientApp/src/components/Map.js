@@ -170,6 +170,10 @@ class Map extends Component {
       })
   }
 
+  // updateUsername = () => {
+
+  // }
+
   //this function updates drop mode so that users may drop treasure
   allowDropMode = () => {
     this.setState({
@@ -321,25 +325,6 @@ class Map extends Component {
   componentDidMount() {
     this.beginDropping()
     this.updateTreasureCount()
-    console.log(localStorage.getItem('access_token'))
-    // axios
-    //   .post(
-    //     '/api/Players',
-    //     {
-    //       headers: {
-    //         Authorization: auth.authorizationHeader()
-    //       }
-    //     },
-    //     {
-    //       Name: 'Captain Tusktooth',
-    //       AmountOfTreasure: 9000,
-    //       Renown: 10,
-    //       CapturedTreasure: []
-    //     }
-    //   )
-    //   .then(resp => {
-    //     console.log({ resp })
-    //   })
   }
 
   //and here's all the stuff the user will see! well.. not quite...
@@ -381,7 +366,10 @@ class Map extends Component {
           </Marker>
         </ReactMapGL>
         <span>
-          <button className="userinfo pulse">
+          <button
+            className="userinfo pulse"
+            //  onClick={this.updateUsername}
+          >
             <p>{this.state.username}</p>
             <p>{this.state.amountOfTreasure} gold</p>
           </button>
