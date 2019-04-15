@@ -151,9 +151,9 @@ class Map extends Component {
 
   updateTreasureCount = () => {
     axios
-      .get('api/Players/2', {
+      .get('api/Players/current', {
         headers: {
-          Authorization: 'Bearer ' + auth.getAccessToken()
+          Authorization: auth.authorizationHeader()
         }
       })
       .then(resp => {
@@ -228,7 +228,7 @@ class Map extends Component {
                 '/api/Treasures',
                 {
                   headers: {
-                    Authorization: 'Bearer ' + auth.getAccessToken()
+                    Authorization: auth.authorizationHeader()
                   }
                 },
                 {
@@ -301,9 +301,9 @@ class Map extends Component {
   }
   viewLog = () => {
     axios
-      .get('/api/Players/1', {
+      .get('/api/Players/current', {
         headers: {
-          Authorization: 'Bearer ' + auth.getAccessToken()
+          Authorization: auth.authorizationHeader()
         }
       })
       .then(resp => {
@@ -318,30 +318,25 @@ class Map extends Component {
   componentDidMount() {
     this.beginDropping()
     this.updateTreasureCount()
-    if (auth.isAuthenticated()) {
-      axios.defaults.headers.common = {
-        Authorization: auth.authorizationHeader()
-      }
-    }
     console.log(localStorage.getItem('access_token'))
-    axios
-      .post(
-        '/api/Players',
-        {
-          headers: {
-            Authorization: 'Bearer ' + auth.getAccessToken()
-          }
-        },
-        {
-          Name: 'Captain Tusktooth',
-          AmountOfTreasure: 9000,
-          Renown: 10,
-          CapturedTreasure: []
-        }
-      )
-      .then(resp => {
-        console.log({ resp })
-      })
+    // axios
+    //   .post(
+    //     '/api/Players',
+    //     {
+    //       headers: {
+    //         Authorization: auth.authorizationHeader()
+    //       }
+    //     },
+    //     {
+    //       Name: 'Captain Tusktooth',
+    //       AmountOfTreasure: 9000,
+    //       Renown: 10,
+    //       CapturedTreasure: []
+    //     }
+    //   )
+    //   .then(resp => {
+    //     console.log({ resp })
+    //   })
   }
 
   //and here's all the stuff the user will see! well.. not quite...

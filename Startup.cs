@@ -35,7 +35,7 @@ namespace content
       }).AddJwtBearer(options =>
       {
         options.Authority = "https://willkshakes.auth0.com/";
-        options.Audience = "https://localhost5001/api";
+        options.Audience = "f27JRjCL5Vn1oKGAxbBlV3UChWKAoiLz";
       });
 
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

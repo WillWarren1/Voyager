@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js'
 import history from './History'
+import axios from 'axios'
 
 const DOMAIN = 'willkshakes.auth0.com'
 const CLIENT_ID = 'f27JRjCL5Vn1oKGAxbBlV3UChWKAoiLz'
@@ -41,7 +42,49 @@ class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
-
+        // check if the player exist
+        let playerExists = false
+        axios
+          .get('/api/Players', {
+            headers: {
+              Authorization: auth.authorizationHeader()
+            }
+          })
+          .then(
+            resp => {
+              for (let i; i < resp.data.length; i++) {
+                if (resp.data[i].userID === authResult.idToken) {
+                  playerExists = true
+                  break
+                }
+              }
+            },
+            () => {
+              console.log({ playerExists })
+            }
+          )
+        // if not then create
+        console.log(playerExists)
+        if (playerExists === false) {
+          axios
+            .post(
+              '/api/Players',
+              {
+                headers: {
+                  Authorization: auth.authorizationHeader()
+                }
+              },
+              {
+                Name: 'Captain NewPirate',
+                AmountOfTreasure: 0,
+                Renown: 10,
+                CapturedTreasure: []
+              }
+            )
+            .then(resp => {
+              console.log({ resp })
+            })
+        }
         if (callback) {
           callback()
         }

@@ -37,6 +37,24 @@ namespace content.Controllers
       return await _context.Players.ToListAsync();
     }
 
+    [HttpGet("current")]
+    public async Task<ActionResult> GetCurrentPlayer()
+    {
+      var currentUser = User;
+      var currentUserId = User.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+      var currentPlayer = await _context
+            .Players
+            .Include(i => i.AmountOfTreasure)
+            .FirstOrDefaultAsync(f => f.userId == currentUserId);
+
+      if (currentPlayer == null)
+      {
+        return NotFound();
+      }
+      return Ok(new { currentUserId });
+    }
+
     // GET: api/Players/5
     [HttpGet("{userId}")]
     public async Task<ActionResult<Player>> GetPlayer(string userId)
