@@ -165,7 +165,7 @@ class Map extends Component {
             username: resp.data.currentPlayer.name,
             amountOfTreasure: resp.data.currentPlayer.amountOfTreasure
           },
-          console.log('received player data')
+          console.log('received player data' + resp)
         )
       })
   }
@@ -230,14 +230,14 @@ class Map extends Component {
               .post(
                 '/api/Treasures',
                 {
-                  headers: {
-                    Authorization: auth.authorizationHeader()
-                  }
-                },
-                {
                   value: this.state.popupData.value,
                   latitude: this.state.popupData.coordinates[0],
                   longitude: this.state.popupData.coordinates[1]
+                },
+                {
+                  headers: {
+                    Authorization: auth.authorizationHeader()
+                  }
                 }
               )
               .then(() => {

@@ -84,9 +84,16 @@ namespace content.Controllers
       var treasureId = treasure.Id;
       await _context.SaveChangesAsync();
       // go to player table
-      var player = _context.Players.FirstOrDefault(f => f.Id == 1);
-      player.CapturedTreasure.Add(treasure);
-      player.AmountOfTreasure = player.AmountOfTreasure + treasure.Value;
+      var currentUser = User;
+      var currentUserId = User.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+      var currentPlayer = await _context
+            .Players
+            .FirstOrDefaultAsync(f => f.userId == currentUserId);
+
+      // var player = _context.Players.FirstOrDefault(f => f.Id == 1);
+      currentPlayer.CapturedTreasure.Add(treasure);
+      currentPlayer.AmountOfTreasure = currentPlayer.AmountOfTreasure + treasure.Value;
       await _context.SaveChangesAsync();
 
       return CreatedAtAction("GetTreasure", new { id = treasure.Id }, treasure);
