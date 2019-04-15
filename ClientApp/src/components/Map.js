@@ -9,6 +9,8 @@ class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      username: '',
+      amountOfTreasure: 0,
       creditshow: false,
       showLog: false,
       treasureLog: [],
@@ -157,10 +159,11 @@ class Map extends Component {
         }
       })
       .then(resp => {
+        console.log({ resp })
         this.setState(
           {
-            username: resp.data.name,
-            amountOfTreasure: resp.data.amountOfTreasure
+            username: resp.data.currentPlayer.name,
+            amountOfTreasure: resp.data.currentPlayer.amountOfTreasure
           },
           console.log('received player data')
         )

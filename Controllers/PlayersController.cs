@@ -19,7 +19,7 @@ namespace content.Controllers
 
     private string _getUserId(System.Security.Claims.ClaimsPrincipal user)
     {
-      var userId = user.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/indentity/claims/nameidentifier").Value;
+      var userId = user.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
       return userId;
     }
 
@@ -37,6 +37,19 @@ namespace content.Controllers
       return await _context.Players.ToListAsync();
     }
 
+    [HttpGet("check")]
+    public async Task<ActionResult> CheckIfPlayerExist()
+    {
+
+      var currentUser = User;
+      var currentUserId = User.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+      var rv = await _context.Players.AnyAsync(a => a.userId == currentUserId);
+
+      return Ok(new { PlayerExists = rv });
+    }
+
+
     [HttpGet("current")]
     public async Task<ActionResult> GetCurrentPlayer()
     {
@@ -45,14 +58,13 @@ namespace content.Controllers
 
       var currentPlayer = await _context
             .Players
-            .Include(i => i.AmountOfTreasure)
             .FirstOrDefaultAsync(f => f.userId == currentUserId);
 
       if (currentPlayer == null)
       {
         return NotFound();
       }
-      return Ok(new { currentUserId });
+      return Ok(new { currentPlayer });
     }
 
     // GET: api/Players/5

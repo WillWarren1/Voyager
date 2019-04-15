@@ -45,51 +45,44 @@ class Auth {
         // check if the player exist
         let playerExists = false
         axios
-          .get('/api/Players', {
+          .get('/api/Players/check', {
             headers: {
               Authorization: auth.authorizationHeader()
             }
           })
-          .then(
-            resp => {
-              for (let i; i < resp.data.length; i++) {
-                if (resp.data[i].userID === authResult.idToken) {
-                  playerExists = true
-                  break
-                }
+          .then(resp => {
+            console.log({ resp })
+            // if not then create
+            // console.log(playerExists)
+            if (!resp.data.playerExists) {
+              axios
+                .post(
+                  '/api/Players',
+                  {
+                    name: 'Captain NewPirate',
+                    amountOfTreasure: 0,
+                    renown: 10
+                  },
+                  {
+                    headers: {
+                      Authorization: auth.authorizationHeader()
+                    }
+                  }
+                )
+                .then(resp => {
+                  console.log({ resp })
+                  if (callback) {
+                    callback()
+                  }
+                  history.replace('/')
+                })
+            } else {
+              if (callback) {
+                callback()
               }
-            },
-            () => {
-              console.log({ playerExists })
+              history.replace('/')
             }
-          )
-        // if not then create
-        console.log(playerExists)
-        if (playerExists === false) {
-          axios
-            .post(
-              '/api/Players',
-              {
-                headers: {
-                  Authorization: auth.authorizationHeader()
-                }
-              },
-              {
-                Name: 'Captain NewPirate',
-                AmountOfTreasure: 0,
-                Renown: 10,
-                CapturedTreasure: []
-              }
-            )
-            .then(resp => {
-              console.log({ resp })
-            })
-        }
-        if (callback) {
-          callback()
-        }
-
-        history.replace('/')
+          })
       } else if (err) {
         history.replace('/')
         console.log(err)
