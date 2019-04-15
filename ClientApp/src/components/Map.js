@@ -56,6 +56,19 @@ class Map extends Component {
     }
   }
 
+  //makes sure the player's icon moves with their location
+  followPlayer = () => {
+    this.interval = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords
+        console.log('checking location')
+        this.setState({
+          userLocation: { lat: latitude, lng: longitude }
+        })
+      })
+    }, 2000)
+  }
+
   //randomly generates treasure within a certain radius of the user's location
   randomLatLng = () => {
     let result = []
@@ -149,6 +162,7 @@ class Map extends Component {
       username: '',
       amountOfTreasure: 0
     })
+    this.followPlayer()
   }
 
   updateTreasureCount = () => {
