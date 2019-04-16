@@ -352,10 +352,10 @@ input {
   background-image: url(./img/midwaves.png);
   background-size: 125%;
   width: 110%;
-  height: 5.65rem;
+  height: 5.75rem;
   margin-top: -5.2rem;
   margin-left: -0.25rem;
-  margin-bottom: 0rem;
+  margin-bottom: -0.25rem;
   position: fixed;
   bottom: 2.65rem;
   left: 0;
@@ -367,11 +367,11 @@ input {
   background-image: url(./img/frontwaves.png);
   background-size: 125%;
   width: 110%;
-  height: 5.25rem;
+  height: 5.7rem;
   margin-top: -3rem;
   margin-left: -0.25rem;
   margin-right: -0.25rem;
-  margin-bottom: 0rem;
+  margin-bottom: -0.65rem;
   position: fixed;
   bottom: 0;
   left: 0;
