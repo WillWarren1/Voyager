@@ -29,7 +29,7 @@ class Map extends Component {
         zoom: 3
       },
       //these are going to be the glossary of coordinates of where the pins need to go
-      userMarkers: [[props.lat, props.lng]],
+      userMarkers: [],
       //token to access the map
       token:
         'pk.eyJ1Ijoid2lsbGtzaGFrZXMiLCJhIjoiY2p1OGd1c3BiMDNqajRkcXF5ZG5ycjh1eiJ9.bj4k4amBd2GhmmXlPVh9Og',
@@ -56,56 +56,23 @@ class Map extends Component {
     }
   }
 
-  //makes sure the player's icon moves with their location
-  // followPlayer = () => {
-  //   this.interval = setInterval(() => {
-  //     navigator.geolocation.getCurrentPosition(position => {
-  //       const { latitude, longitude } = position.coords
-  //       // console.log(position.coords)
-  //       this.setState(
-  //         {
-  //           newUserLocation: { lat: latitude, lng: longitude }
-  //         },
-  //         () => {
-  //           console.log(this.state.newUserLocation)
-  //         }
-  //       )
-  //     })
-  //   }, 2000)
-  //   this.renderPlayer()
-  // }
-
-  renderPlayer = () => {
-    if (
-      this.state.newUserLocation.lat !== this.state.userLocation.lat ||
-      this.state.newUserLocation.lng !== this.state.userLocation.lng
-    ) {
-      this.setState({
-        userLocation: {
-          lat: this.state.newUserLocation.lat,
-          lng: this.state.newUserLocation.lng
-        }
-      })
-    }
-  }
-
   //randomly generates treasure within a certain radius of the user's location
-  randomLatLng = () => {
-    let result = []
+  // randomLatLng = () => {
+  //   let result = []
 
-    let howFar = 0.0035 * Math.sqrt(Math.random())
-    let whichDirection = 2 * Math.PI * Math.random()
-    let x = howFar * Math.cos(whichDirection)
-    let y = howFar * Math.sin(whichDirection)
-    result[0] = x + this.state.userLocation.lat
-    result[1] = y + this.state.userLocation.lng
-    console.log(result)
-    return result
-  }
+  //   let howFar = 0.0035 * Math.sqrt(Math.random())
+  //   let whichDirection = 2 * Math.PI * Math.random()
+  //   let x = howFar * Math.cos(whichDirection)
+  //   let y = howFar * Math.sin(whichDirection)
+  //   result[0] = x + this.state.userLocation.lat
+  //   result[1] = y + this.state.userLocation.lng
+  //   console.log(result)
+  //   return result
+  // }
 
   //same as above, randomly generates treasure within a certain radius of user's location,
   // but this is active the moment the user's location is received, only called once per session
-  openingLatLng = (lat, lng) => {
+  randomLatLng = (lat, lng) => {
     let result = []
 
     let howFar = 0.0035 * Math.sqrt(Math.random())
@@ -158,6 +125,7 @@ class Map extends Component {
   componentWillReceiveProps(props) {
     console.log([props.lat, props.lng])
     this.updateTreasureCount()
+    // this.beginDropping()
     this.setState({
       viewport: {
         width: '100%',
@@ -165,24 +133,28 @@ class Map extends Component {
         latitude: props.lat,
         longitude: props.lng,
         zoom: 17,
-        maxZoom: 20,
-        minZoom: 15
+        maxZoom: 20
+        // minZoom: 15
       },
       userLocation: {
         lat: props.lat,
         lng: props.lng
       },
-      userMarkers: this.state.userMarkers.concat(
-        [this.openingLatLng(props.lat, props.lng)],
-        [this.openingLatLng(props.lat, props.lng)],
-        [this.openingLatLng(props.lat, props.lng)],
-        [this.openingLatLng(props.lat, props.lng)],
-        [this.openingLatLng(props.lat, props.lng)]
-      ),
+
       username: '',
       amountOfTreasure: 0
     })
-    // this.followPlayer()
+    if (this.state.userMarkers.length <= 5) {
+      this.setState({
+        userMarkers: this.state.userMarkers.concat(
+          [this.randomLatLng(props.lat, props.lng)],
+          [this.randomLatLng(props.lat, props.lng)],
+          [this.randomLatLng(props.lat, props.lng)],
+          [this.randomLatLng(props.lat, props.lng)],
+          [this.randomLatLng(props.lat, props.lng)]
+        )
+      })
+    }
   }
 
   updateTreasureCount = () => {
