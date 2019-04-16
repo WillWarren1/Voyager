@@ -24,8 +24,8 @@ class Map extends Component {
       viewport: {
         width: '100%',
         height: '100%',
-        latitude: 27.7709662,
-        longitude: -82.6633524,
+        latitude: props.lat,
+        longitude: props.lng,
         zoom: 3
       },
       //these are going to be the glossary of coordinates of where the pins need to go
@@ -42,9 +42,15 @@ class Map extends Component {
         500,
         500,
         500,
+        500,
+        500,
+        500,
         1000,
         1000,
         1000,
+        1000,
+        1000,
+        1500,
         1500,
         1500,
         2500
@@ -126,23 +132,30 @@ class Map extends Component {
     console.log([props.lat, props.lng])
     this.updateTreasureCount()
     // this.beginDropping()
+    let lat = props.lat
+    let lng = props.lng
+    console.log('screen center:', this.state.screenCenter)
+    // if (this.state.screenCenter) {
+    //   lat = this.state.screenCenter.lat
+    //   lng = this.state.screenCenter.lng
+    // }
     this.setState({
       viewport: {
         width: '100%',
         height: '100%',
-        latitude: props.lat,
-        longitude: props.lng,
+        latitude: lat,
+        longitude: lng,
         zoom: 17,
-        maxZoom: 20
-        // minZoom: 15
+        maxZoom: 20,
+        minZoom: 15
       },
       userLocation: {
         lat: props.lat,
         lng: props.lng
-      },
+      }
 
-      username: '',
-      amountOfTreasure: 0
+      // username: '',
+      // amountOfTreasure: 0
     })
     if (this.state.userMarkers.length <= 5) {
       this.setState({
@@ -176,9 +189,11 @@ class Map extends Component {
       })
   }
 
-  // updateUsername = () => {
-
-  // }
+  updateUsername = () => {
+    // this.setState({
+    //   username:
+    // })
+  }
 
   //this function updates drop mode so that users may drop treasure
   allowDropMode = () => {
@@ -337,6 +352,7 @@ class Map extends Component {
   logout = () => {
     this.props.stopWatch()
     auth.logout()
+    this.props.history.push('/')
   }
 
   //and here's all the stuff the user will see! well.. not quite...
@@ -345,11 +361,41 @@ class Map extends Component {
   render() {
     const visibility = this.state.showLog ? 'show' : 'hidden'
     const creditvis = this.state.creditshow ? 'show' : 'hidden'
+    // const displayname = this.state.username ? 'new' : 'custom'
+
+    const _viewport = { ...this.state.viewport }
+    if (this.state.screenCenter && this.state.screenCenter.lat !== 0) {
+      _viewport.latitude = this.state.screenCenter.lat
+      _viewport.longitude = this.state.screenCenter.lng
+    }
+
     return (
       <div>
         <ReactMapGL
-          {...this.state.viewport}
-          onViewportChange={viewport => this.setState({ viewport })}
+          {..._viewport}
+          onViewportChange={viewport =>
+            this.setState({
+              viewport
+            })
+          }
+          onInteractionStateChange={e => {
+            if (!e.isDragging && !e.isPanning && !e.isRotating) {
+              console.log('interacted', e)
+              console.log('user moved the map')
+              console.log(this.state.viewport)
+              this.setState(
+                {
+                  screenCenter: {
+                    lat: this.state.viewport.latitude,
+                    lng: this.state.viewport.longitude
+                  }
+                },
+                () => {
+                  console.log('updated state', this.state)
+                }
+              )
+            }
+          }}
           mapboxApiAccessToken={this.state.token}
           onClick={this.dropChest}
           className="Map"
@@ -381,6 +427,7 @@ class Map extends Component {
           <button
             className="userinfo pulse"
             //  onClick={this.updateUsername}
+            // onClick={this.logout}
           >
             <button onClick={this.logout}>log out</button>
             <p>{this.state.username}</p>

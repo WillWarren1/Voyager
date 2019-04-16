@@ -35,6 +35,7 @@ class Home extends Component {
   render() {
     return (
       <Map
+        history={this.props.history}
         stopWatch={this.stopWatch}
         lat={this.state.userLocation.lat}
         lng={this.state.userLocation.lng}
