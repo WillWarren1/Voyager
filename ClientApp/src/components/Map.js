@@ -57,16 +57,36 @@ class Map extends Component {
   }
 
   //makes sure the player's icon moves with their location
-  followPlayer = () => {
-    this.interval = setInterval(() => {
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords
-        console.log('checking location')
-        this.setState({
-          userLocation: { lat: latitude, lng: longitude }
-        })
+  // followPlayer = () => {
+  //   this.interval = setInterval(() => {
+  //     navigator.geolocation.getCurrentPosition(position => {
+  //       const { latitude, longitude } = position.coords
+  //       // console.log(position.coords)
+  //       this.setState(
+  //         {
+  //           newUserLocation: { lat: latitude, lng: longitude }
+  //         },
+  //         () => {
+  //           console.log(this.state.newUserLocation)
+  //         }
+  //       )
+  //     })
+  //   }, 2000)
+  //   this.renderPlayer()
+  // }
+
+  renderPlayer = () => {
+    if (
+      this.state.newUserLocation.lat !== this.state.userLocation.lat ||
+      this.state.newUserLocation.lng !== this.state.userLocation.lng
+    ) {
+      this.setState({
+        userLocation: {
+          lat: this.state.newUserLocation.lat,
+          lng: this.state.newUserLocation.lng
+        }
       })
-    }, 2000)
+    }
   }
 
   //randomly generates treasure within a certain radius of the user's location
@@ -162,7 +182,7 @@ class Map extends Component {
       username: '',
       amountOfTreasure: 0
     })
-    this.followPlayer()
+    // this.followPlayer()
   }
 
   updateTreasureCount = () => {
@@ -343,6 +363,7 @@ class Map extends Component {
   }
 
   logout = () => {
+    this.props.stopWatch()
     auth.logout()
   }
 
@@ -379,8 +400,8 @@ class Map extends Component {
           <Marker
             latitude={this.state.userLocation.lat}
             longitude={this.state.userLocation.lng}
-            offsetLeft={0}
-            offsetTop={0}>
+            offsetLeft={-30}
+            offsetTop={-20}>
             <img src={piracy} alt="pirate skull" width={50} height={50} />
           </Marker>
         </ReactMapGL>
