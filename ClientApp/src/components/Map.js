@@ -3,16 +3,20 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
 import piracy from '../img/piracy.png'
 import chest from '../img/chest.png'
+
 import auth from '../Auth'
 
 class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      newNameText: '',
       username: '',
       amountOfTreasure: 0,
       creditshow: false,
       showLog: false,
+      showLogOut: false,
+      showNameField: false,
       treasureLog: [],
       popupInfo: null,
       popupData: null,
@@ -63,22 +67,22 @@ class Map extends Component {
   }
 
   //randomly generates treasure within a certain radius of the user's location
-  // randomLatLng = () => {
-  //   let result = []
+  randomLatLng = () => {
+    let result = []
 
-  //   let howFar = 0.0035 * Math.sqrt(Math.random())
-  //   let whichDirection = 2 * Math.PI * Math.random()
-  //   let x = howFar * Math.cos(whichDirection)
-  //   let y = howFar * Math.sin(whichDirection)
-  //   result[0] = x + this.state.userLocation.lat
-  //   result[1] = y + this.state.userLocation.lng
-  //   console.log(result)
-  //   return result
-  // }
+    let howFar = 0.0035 * Math.sqrt(Math.random())
+    let whichDirection = 2 * Math.PI * Math.random()
+    let x = howFar * Math.cos(whichDirection)
+    let y = howFar * Math.sin(whichDirection)
+    result[0] = x + this.state.userLocation.lat
+    result[1] = y + this.state.userLocation.lng
+    console.log(result)
+    return result
+  }
 
   //same as above, randomly generates treasure within a certain radius of user's location,
   // but this is active the moment the user's location is received, only called once per session
-  randomLatLng = (lat, lng) => {
+  openingLatLng = (lat, lng) => {
     let result = []
 
     let howFar = 0.0035 * Math.sqrt(Math.random())
@@ -160,11 +164,11 @@ class Map extends Component {
     if (this.state.userMarkers.length <= 5) {
       this.setState({
         userMarkers: this.state.userMarkers.concat(
-          [this.randomLatLng(props.lat, props.lng)],
-          [this.randomLatLng(props.lat, props.lng)],
-          [this.randomLatLng(props.lat, props.lng)],
-          [this.randomLatLng(props.lat, props.lng)],
-          [this.randomLatLng(props.lat, props.lng)]
+          [this.openingLatLng(props.lat, props.lng)],
+          [this.openingLatLng(props.lat, props.lng)],
+          [this.openingLatLng(props.lat, props.lng)],
+          [this.openingLatLng(props.lat, props.lng)],
+          [this.openingLatLng(props.lat, props.lng)]
         )
       })
     }
@@ -189,10 +193,43 @@ class Map extends Component {
       })
   }
 
-  updateUsername = () => {
-    // this.setState({
-    //   username:
-    // })
+  updateStateWithNameText = event => {
+    this.setState(
+      {
+        newNameText: event.target.value
+      },
+      () => {
+        console.log(this.state.newNameText)
+      }
+    )
+  }
+
+  updateUsername = e => {
+    e.preventDefault()
+    axios
+      .put(
+        '/api/Players/username',
+        {
+          Name: this.state.newNameText
+        },
+        {
+          headers: {
+            Authorization: auth.authorizationHeader()
+          }
+        }
+      )
+      .then(resp => {
+        console.log({ resp })
+        this.setState(
+          {
+            newNameText: ''
+          },
+          () => {
+            this.updateTreasureCount()
+            this.viewNameField()
+          }
+        )
+      })
   }
 
   //this function updates drop mode so that users may drop treasure
@@ -327,6 +364,19 @@ class Map extends Component {
       creditshow: !this.state.creditshow
     })
   }
+
+  viewNameField = () => {
+    this.setState({
+      showNameField: !this.state.showNameField
+    })
+  }
+
+  viewLogOut = () => {
+    this.setState({
+      showLogOut: !this.state.showLogOut
+    })
+  }
+
   viewLog = () => {
     axios
       .get('/api/Players/playerTreasure', {
@@ -361,7 +411,8 @@ class Map extends Component {
   render() {
     const visibility = this.state.showLog ? 'show' : 'hidden'
     const creditvis = this.state.creditshow ? 'show' : 'hidden'
-    // const displayname = this.state.username ? 'new' : 'custom'
+    const logoutScreen = this.state.showLogOut ? 'show' : 'hidden'
+    const nameField = this.state.showNameField ? 'show' : 'hidden'
 
     const _viewport = { ...this.state.viewport }
     if (this.state.screenCenter && this.state.screenCenter.lat !== 0) {
@@ -426,15 +477,21 @@ class Map extends Component {
           </Marker>
         </ReactMapGL>
         <span>
-          <button
-            className="userinfo pulse"
-            //  onClick={this.updateUsername}
-            // onClick={this.logout}
-          >
-            <button onClick={this.logout}>log out</button>
-            <p>{this.state.username}</p>
+          <button className="userinfo pulse" onClick={this.viewNameField}>
+            <p className="username">{this.state.username}</p>
             <p>{this.state.amountOfTreasure} gold</p>
           </button>
+          <div className={`newname${nameField}`}>
+            <form onSubmit={this.updateUsername}>
+              <input
+                className="textfield"
+                type="text"
+                placeholder="New username?"
+                value={this.state.newNameText}
+                onChange={this.updateStateWithNameText}
+              />
+            </form>
+          </div>
           <button className="treasurelogbutton" onClick={this.viewLog}>
             <p>Treasure log</p>
           </button>
@@ -450,6 +507,9 @@ class Map extends Component {
         </button>
         <button className="creditbutton" onClick={this.viewCredits}>
           Credits
+        </button>
+        <button className="logoutbutton" onClick={this.viewLogOut}>
+          Abandon Ship
         </button>
         <div className={`credits${creditvis}`}>
           <div className="credit-text">
@@ -512,6 +572,12 @@ class Map extends Component {
             })}
           </ul>
         </div>
+        <section className={`logoutmenu${logoutScreen}`}>
+          Are you sure you'd like to end your current Voyage?
+          <button className="logoutConfirm" onClick={this.logout}>
+            Yes, log out
+          </button>
+        </section>
         {/* <section>{this.state.treasureLog[0].value}</section> */}
       </div>
     )

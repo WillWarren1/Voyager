@@ -67,7 +67,7 @@ namespace content.Controllers
       return Ok(new { currentPlayer });
     }
 
-
+    //GET: api/Players/current
     [HttpGet("current")]
     public async Task<ActionResult> GetCurrentPlayer()
     {
@@ -83,6 +83,22 @@ namespace content.Controllers
         return NotFound();
       }
       return Ok(new { currentPlayer });
+    }
+
+    //PUT: api/Players/username
+    [HttpPut("username")]
+    public async Task<IActionResult> UpdatePlayer(Player player)
+    {
+      var currentUser = User;
+      var currentUserId = User.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+      var currentPlayer = await _context
+            .Players
+            .FirstOrDefaultAsync(f => f.userId == currentUserId);
+      currentPlayer.Name = player.Name;
+      _context.SaveChanges();
+      return Ok();
+
     }
 
     // GET: api/Players/5

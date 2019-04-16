@@ -22,6 +22,11 @@ body,
 .Map {
   margin-bottom: -2rem;
 }
+
+.username {
+  margin-left: 3rem;
+}
+
 .userinfo {
   position: absolute;
   bottom: 7%;
@@ -34,6 +39,7 @@ body,
   border: 4px solid rgb(184, 236, 253);
   border-left: none;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 8px 22px 0 rgba(0, 0, 0, 0.19);
+  width: 10rem;
   /* -webkit-animation-duration: 5;
   animation-duration: 5;
   -webkit-animation-fill-mode: both;
@@ -120,6 +126,7 @@ ul {
 .userinfo p {
   color: whitesmoke;
   margin: 0.25rem;
+  margin-left: -0.65rem;
 }
 
 .button1 {
@@ -144,6 +151,72 @@ ul {
   padding: 0.5rem;
   border-radius: 50%;
 }
+
+.logoutbutton {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  margin: 1rem;
+  margin-top: 0rem;
+  margin-right: 0rem;
+  padding: 1rem;
+  padding-right: 0.5rem;
+  /* padding-left: 1rem; */
+  background-color: rgb(43, 67, 175);
+  border-bottom-left-radius: 25%;
+  border: 4px solid rgb(184, 236, 253);
+  border-top: none;
+  border-right: none;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 8px 22px 0 rgba(0, 0, 0, 0.19);
+  color: whitesmoke;
+}
+
+.logoutmenushow {
+  position: absolute;
+  width: 80%;
+  height: 30%;
+  border-radius: 10%;
+  top: 35%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  color: whitesmoke;
+  text-align: center;
+  font-size: 1.25rem;
+  margin-top: -2rem;
+  background-color: rgba(105, 87, 29, 0.692);
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 4rem 4rem 4rem 4rem;
+}
+
+.logoutmenuhidden {
+  display: none;
+}
+
+.newnameshow {
+  position: absolute;
+  bottom: 10.5%;
+  margin: 1rem;
+  margin-left: 0rem;
+  padding: 1rem;
+}
+
+.textfield {
+  margin: 0.2rem;
+  margin-left: -0.5rem;
+  height: 1.35rem;
+  width: 7.8rem;
+  z-index: 4;
+}
+
+.newnamehidden {
+  display: none;
+}
+
 .creditbutton {
   position: absolute;
   top: 0%;
