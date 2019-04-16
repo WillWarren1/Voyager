@@ -365,6 +365,7 @@ class Map extends Component {
 
     const _viewport = { ...this.state.viewport }
     if (this.state.screenCenter && this.state.screenCenter.lat !== 0) {
+      _viewport.zoom = this.state.screenCenter.zoom
       _viewport.latitude = this.state.screenCenter.lat
       _viewport.longitude = this.state.screenCenter.lng
     }
@@ -387,7 +388,8 @@ class Map extends Component {
                 {
                   screenCenter: {
                     lat: this.state.viewport.latitude,
-                    lng: this.state.viewport.longitude
+                    lng: this.state.viewport.longitude,
+                    zoom: this.state.viewport.zoom
                   }
                 },
                 () => {
@@ -503,9 +505,10 @@ class Map extends Component {
                     {treasure.longitude}
                   </li>
                 )
-              } else {
-                return console.log("you don't need this much")
               }
+              // else {
+              //   return console.log("you don't need this much")
+              // }
             })}
           </ul>
         </div>
