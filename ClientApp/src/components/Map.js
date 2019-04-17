@@ -431,8 +431,10 @@ class Map extends Component {
             })
           }
           onInteractionStateChange={e => {
-            if (e.isDragging && !e.isRotating) {
-              // !e.isPanning &&
+            if (
+              (e.isDragging && !e.isRotating) ||
+              (!e.isPanning && !e.isRotating)
+            ) {
               console.log('interacted', e)
               console.log('user moved the map')
               console.log(this.state.viewport)
