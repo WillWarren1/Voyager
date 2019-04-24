@@ -255,6 +255,20 @@ class Map extends Component {
             [event.lngLat[1], event.lngLat[0]]
           ])
         })
+        axios
+          .put('/api/Players/drop', {
+            headers: {
+              Authorization: auth.authorizationHeader()
+            }
+          })
+          .then(
+            resp => {
+              console.log({ resp })
+            },
+            () => {
+              this.updateTreasureCount()
+            }
+          )
       } else {
         return
       }
@@ -568,10 +582,9 @@ class Map extends Component {
                     {treasure.longitude}
                   </li>
                 )
+              } else {
+                return console.log("you don't need this much")
               }
-              // else {
-              //   return console.log("you don't need this much")
-              // }
             })}
           </ul>
         </div>

@@ -91,6 +91,10 @@ body,
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 8px 22px 0 rgba(0, 0, 0, 0.19);
 }
 
+.credit-link {
+  color: rgb(248, 218, 85);
+}
+
 .treasurelogbutton p {
   color: whitesmoke;
   margin: 0.25rem;
@@ -143,7 +147,7 @@ ul {
 .button3 {
   position: absolute;
   bottom: 2%;
-  right: 30%;
+  right: 28%;
   margin: 1rem;
   background-color: rgb(43, 67, 175);
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 8px 22px 0 rgba(0, 0, 0, 0.19);
@@ -375,6 +379,9 @@ input {
   display: flex;
   justify-content: space-evenly;
 }
+/* .logoutbutton {
+
+} */
 
 .frontwaves {
   background-image: url(./img/frontwaves.png);
@@ -392,6 +399,21 @@ input {
 
 a {
   text-decoration: none;
+}
+
+@media (min-width: 200px) {
+  .creditsshow {
+    top: 20%;
+    height: 65%;
+  }
+  .logoutbutton {
+    padding: 1rem;
+    margin-top: 0;
+    height: 12%;
+  }
+  .treasurelogshow {
+    width: 90%;
+  }
 }
 
 @media (min-width: 375px) {
@@ -418,6 +440,10 @@ a {
     height: 6.5rem;
     background-repeat: no-repeat;
   }
+  .textfield {
+    margin-left: -0.21rem;
+    width: 8rem;
+  }
   .midwaves {
     height: 5.5rem;
     background-repeat: no-repeat;
@@ -440,13 +466,18 @@ a {
     margin-left: 5%;
     width: 100%;
   }
-
+  .creditsshow {
+    height: 40%;
+  }
   .userinfo {
     height: 13%;
   }
-
+  .textfield {
+    width: 11rem;
+  }
   .treasurelogbutton {
     height: 13%;
+    width: 7rem;
   }
 
   .creditbutton {
@@ -481,6 +512,10 @@ a {
 
   .button3 {
     right: 33%;
+  }
+
+  .userinfo {
+    width: 33%;
   }
   .splash-header {
     height: 6.5rem;
@@ -530,6 +565,14 @@ a {
     margin-left: 25%;
     width: 65%;
   }
+
+  .userinfo {
+    width: 13rem;
+  }
+
+  .treasurelogbutton {
+    width: 13rem;
+  }
   .splash-header {
     height: 8.5rem;
   }
@@ -543,8 +586,14 @@ a {
   .button3 {
     right: 35%;
   }
+  .logoutbutton {
+    width: 13rem;
+  }
+  .creditsshow {
+    height: 28%;
+  }
   .treasurelogshow {
-    width: 50%;
+    width: 350;
     font-size: 1.25rem;
     height: 70%;
     padding-top: 1rem;
@@ -581,6 +630,10 @@ a {
     height: 10rem;
   }
 
+  .button3 {
+    right: 40%;
+  }
+
   .login {
     padding-left: none;
   }
@@ -596,7 +649,16 @@ a {
     margin-bottom: -4rem;
   }
   .button3 {
-    right: 38%;
+    right: 43%;
+  }
+  .creditsshow {
+    width: 60%;
+    height: 40%;
+  }
+  .treasurelogshow {
+    width: 50%;
+    height: 35rem;
+    font-size: 1.2rem;
   }
   .login {
     padding-left: none;
@@ -645,6 +707,13 @@ a {
   .splash-header {
     height: 15rem;
     margin-bottom: -8rem;
+  }
+
+  .treasurelogshow {
+    width: 40%;
+    top: 5%;
+    height: 95%;
+    padding: 2rem;
   }
   .info-text {
     padding-left: 3rem;

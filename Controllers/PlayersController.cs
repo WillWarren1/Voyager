@@ -101,6 +101,21 @@ namespace content.Controllers
 
     }
 
+    [HttpPut("drop")]
+    public async Task<IActionResult> LoseTreasure(Player player)
+    {
+      var currentUser = User;
+      var currentUserId = User.Claims.First(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+      var currentPlayer = await _context
+            .Players
+            .FirstOrDefaultAsync(f => f.userId == currentUserId);
+      currentPlayer.AmountOfTreasure = player.AmountOfTreasure - 1000;
+      _context.SaveChanges();
+      return Ok();
+
+    }
+
     // GET: api/Players/5
     [HttpGet("{userId}")]
     public async Task<ActionResult<Player>> GetPlayer(string userId)
